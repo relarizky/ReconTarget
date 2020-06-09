@@ -1,5 +1,4 @@
 from flask import flash
-from flask_login import current_user
 
 def filter_register_form(realname, username, password, id_role):
     error = 0

@@ -1,7 +1,7 @@
 import bcrypt
 from app import sql as db
+from datetime import datetime
 from flask_login import UserMixin
-from sqlalchemy.dialects.mysql import TINYTEXT
 
 class Role(db.Model):
     __tablename__ = 'tb_role'
@@ -41,4 +41,6 @@ class Target(db.Model):
     __tablename__ = 'tb_target'
 
     id = db.Column(db.Integer, primary_key = True)
-    url = db.Column(TINYTEXT(), nullable = False)
+    url = db.Column(db.String(50), nullable = False)
+    comment = db.Column(db.Text)
+    submited_at = db.Column(db.Date, default = datetime.utcnow, onupdate = datetime.utcnow)

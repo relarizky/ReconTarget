@@ -41,6 +41,11 @@ class Target(db.Model):
     __tablename__ = 'tb_target'
 
     id = db.Column(db.Integer, primary_key = True)
-    url = db.Column(db.String(50), nullable = False)
-    comment = db.Column(db.Text)
-    submited_at = db.Column(db.Date, default = datetime.utcnow, onupdate = datetime.utcnow)
+    target_url = db.Column(db.String(50), nullable = False)
+    target_comment = db.Column(db.String(20), nullable = True)
+    target_status_code = db.Column(db.String(3), default = '-')
+    submited_at = db.Column(db.Date, default = datetime.utcnow)
+
+    def __init__(self, url = None, comment = None):
+        self.target_url = url
+        self.target_comment = comment

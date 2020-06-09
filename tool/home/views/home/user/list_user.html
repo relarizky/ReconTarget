@@ -50,16 +50,16 @@
       {% if user.user_name == current_user.user_name %}
         <td>
           <button aria-disabled='true' class='btn btn-sm btn-warning disabled'>
-            <a href='#'> EDIT </a>
+            <a href='#'> <i class='fa fa-edit'>EDIT</i> </a>
           </button>
 
           <button aria-disabled='true' class='btn btn-sm btn-danger disabled'>
-            <a href='#'> DELETE </a>
+            <a href='#'> <i class='fa fa-remove'>DELETE</i> </a>
           </button>
         </td>
       {% else %}
         <td>
-          <a href='#' class='btn btn-sm btn-warning' data-toggle='modal' data-target='#exampleModal{{user.id}}'> EDIT </a>
+          <a href='#' class='btn btn-sm btn-warning' data-toggle='modal' data-target='#exampleModal{{user.id}}'> <i class='fa fa-edit'>EDIT</i> </a>
 
           <div class="modal fade" id="exampleModal{{user.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -104,7 +104,7 @@
             </div>
           </div>
 
-          <a href='{{url_for("home.user_delete", id = user.id)}}' class='btn btn-sm btn-danger'> DELETE </a>
+          <a href='{{url_for("home.user_delete", id = user.id)}}' class='btn btn-sm btn-danger'> <i class='fa fa-remove'>DELETE</i> </a>
         </td>
       {% endif %}
       </tr>

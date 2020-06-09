@@ -3,7 +3,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_wtf.csrf import CSRFProtect
 from flask_sqlalchemy import SQLAlchemy
-from helper.general import pascal_case
+from helper.general import pascal_case, text_date
 from .configuration import Config
 
 app = Flask(__name__)
@@ -30,3 +30,8 @@ def not_authorized(error):
 @app.template_filter('pascal_case')
 def convert_text(value):
     return pascal_case(value)
+
+
+@app.template_filter('text_date')
+def human_readable_date(value):
+    return text_date(value)

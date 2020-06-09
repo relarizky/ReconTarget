@@ -12,7 +12,7 @@ def user_loader(id):
 
 @auth_bp.route('/', methods = ['GET', 'POST'])
 def login():
-    if current_user.is_authenticated != True:
+    if current_user.is_active != True:
         if request.method == 'POST':
             username = request.form.get('username')
             password = request.form.get('password')

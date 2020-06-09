@@ -19,7 +19,7 @@ def default_role(rname):
 roles = ['administrator', 'user']
 users = {
     1 : ['aku sayang kamu', 'sayang', 'sayang'], # administrator
-    2 : ['user ganteng', 'user', 'user'] # ordinary user
+    2 : ['muhammad hekmen', 'hekmen', 'hekmen'] # ordinary user
 }
 
 for role in roles:

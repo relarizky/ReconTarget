@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
 		<link rel="stylesheet" href="/assets/css/style.css">
   </head>
   <body>
@@ -15,22 +15,44 @@
 			<nav id="sidebar">
 				<div class="p-4 pt-5">
 		  		<a href="#" class="img logo rounded-circle mb-5" style="background-image: url(/assets/images/attacker.png);"></a>
+          <p class='text-center my-3' style='color: #f8b739; font-size:1.6rem;'>ReconTarget</p>
 	        <ul class="list-unstyled components mb-5">
 	          <li>
-	            <a href="#homeSubmenu">Dashboard</a>
+	            <a href="{{url_for('home.index')}}">Dashboard</a>
 	          </li>
+          {% if current_user.user_role.id == 1 %}
             <li>
-              <a href="{{url_for('home.users')}}">Users</a>
+              <a href="#">Check Upgrade</a>
             </li>
-	          <li>
-	              <a href="#">Reverse IP</a>
-	          </li>
-	          <li>
-              <a href="#pageSubmenu">Directory Scanner</a>
-	          </li>
-	          <li>
-              <a href="#">Wordpress User Finder</a>
-	          </li>
+            <li>
+              <a href="#userSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Users</a>
+              <ul class="collapse list-unstyled" id="userSubmenu">
+                <li>
+                  <a href="{{url_for('home.edit_profile')}}">Edit Profile</a>
+                </li>
+                <li>
+                  <a href="{{url_for('home.users')}}">Manage User</a>
+                </li>
+              </ul>
+            </li>
+          {% endif %}
+            <li>
+              <a href="#toolSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Tools</a>
+              <ul class="collapse list-unstyled" id="toolSubmenu">
+                <li>
+                  <a href="#">Reverse IP</a>
+                </li>
+                <li>
+                  <a href="#">Directory Scanner</a>
+                </li>
+                <li>
+                  <a href="#">Subdomain Scanner</a>
+                </li>
+                <li>
+                  <a href="#">Wordpress User Finder</a>
+                </li>
+              </ul>
+            </li>
             <li>
               <a href="{{url_for('auth.logout')}}">Logout</a>
 	          </li>
@@ -49,10 +71,13 @@
       <div id="content" class="p-4 p-md-5">
         {% block navbar %} {% endblock %}
 
+        {% import 'macro.html' as macro %}
+        {{macro.alert_message()}}
+
         <h2 class="mb-4">
           {% block header %}{% endblock %}
         </h2>
-        
+
         {% block body %}{% endblock %}
       </div>
 		</div>

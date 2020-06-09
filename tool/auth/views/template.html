@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!-- Copyright © https://colorlib.com -->
+<html lang="en">
+  <head>
+  	<title>ReconTarget</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/assets/css/style.css">
+  </head>
+  <body>
+
+		<div class="wrapper d-flex align-items-stretch">
+			<nav id="sidebar">
+				<div class="p-4 pt-5">
+		  		<a href="#" class="img logo rounded-circle mb-5" style="background-image: url(/assets/images/attacker.png);"></a>
+	        <ul class="list-unstyled components mb-5">
+	          <li>
+	            <a href="#homeSubmenu">Dashboard</a>
+	          </li>
+            <li>
+              <a href="{{url_for('home.users')}}">Users</a>
+            </li>
+	          <li>
+	              <a href="#">Reverse IP</a>
+	          </li>
+	          <li>
+              <a href="#pageSubmenu">Directory Scanner</a>
+	          </li>
+	          <li>
+              <a href="#">Wordpress User Finder</a>
+	          </li>
+            <li>
+              <a href="{{url_for('auth.logout')}}">Logout</a>
+	          </li>
+	        </ul>
+
+	        <div class="footer text-center">
+              <p style='font-size:1rem;'>
+                <i class='fa fa-github'><a href='https://github.com/relarizky/' class='text-decoration-none' target='_blank'> Relarizky </a></i>
+              </p>
+	        </div>
+
+	      </div>
+    	</nav>
+
+        <!-- Page Content  -->
+      <div id="content" class="p-4 p-md-5">
+        {% block navbar %} {% endblock %}
+
+        <h2 class="mb-4">
+          {% block header %}{% endblock %}
+        </h2>
+        
+        {% block body %}{% endblock %}
+      </div>
+		</div>
+
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/popper.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/main.js"></script>
+  </body>
+</html>

@@ -78,6 +78,7 @@
             <label for="target-url" class="col-form-label"> Target URL: </label>
             <input type="text" name="target_url" placeholder="http://target.com/" class="form-control" id="target-url" required>
           </div>
+          <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
           <input id="mainButton" type="submit" style="display: none;">
         </form>
       </div>

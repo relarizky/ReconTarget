@@ -12,7 +12,7 @@ from .user import *
 @login_required
 def index():
     page = request.args.get('page', 1, type = int)
-    target = Target.query.paginate(page, 5, False)
+    target = Target.query.filter_by(id_user = current_user.id).paginate(page, 5, False)
     return render_template('home/index.html', targets = target)
 
 

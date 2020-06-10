@@ -29,8 +29,9 @@
     <thead style='background-color: #f8b739;'>
       <tr>
         <td> URL </td>
-        <td> COMMENT </td>
-        <td> LAST STATUS </td>
+        <td> SERVER </td>
+        <td> STATUS </td>
+        <td> COUNTRY </td>
         <td> SUBMITED AT </td>
         <td> ACTION </td>
       </tr>
@@ -39,18 +40,22 @@
     {% for target in targets.items %}
       <tr>
         <td> {{target.target_url}} </td>
-        <td> {{target.target_comment}} </td>
+        <td> {{target.target_server}} </td>
         <td> {{target.target_status_code}} </td>
+        <td> <img src='{{url_for("get_flag", country = target.target_country)}}'> </td>
         <td> {{target.submited_at | text_date}} </td>
         <td>
-          <a href='#' class='btn btn-sm btn-info'>
-            <i class='fa fa-play'>CHECK</i>
+          <a href='{{url_for("home.check_target_connection", id = target.id)}}' class='btn btn-sm btn-info' title='check connection'>
+            <span class='fa fa-play'></span>
           </a>
-          <a href='#' class='btn btn-sm btn-warning'>
-            <i class='fa fa-download'>DOWNLOAD</i>
+          <a href='#' class='btn btn-sm btn-warning' title='download info'>
+            <span class='fa fa-download'></span>
           </a>
-          <a href='#' class='btn btn-sm btn-danger'>
-            <i class='fa fa-remove'>DELETE</i>
+          <a href='#' class='btn btn-sm btn-secondary' title='view raw info'>
+            <span class='fa fa-eye'></span>
+          </a>
+          <a href='{{url_for("home.delete_target", id = target.id)}}' class='btn btn-sm btn-danger' title='remove url'>
+            <span class='fa fa-remove'></span>
           </a>
         </td>
     {% endfor %}
@@ -68,28 +73,11 @@
         </button>
       </div>
       <div class="modal-body">
-        <form action='{{url_for("dashboard_bp.add_user")}}' method='POST'>
+        <form action='{{url_for("home.add_target")}}' method='POST'>
           <div class="form-group">
-            <label for="user-name" class="col-form-label"> User name: </label>
-            <input type="text" name="user_name" class="form-control" id="user-name" required>
+            <label for="target-url" class="col-form-label"> Target URL: </label>
+            <input type="text" name="target_url" placeholder="http://target.com/" class="form-control" id="target-url" required>
           </div>
-          <div class="form-group">
-            <label for="real-name" class="col-form-label"> Real name: </label>
-            <input type="text" name="real_name" class="form-control" id="real-name" required>
-          </div>
-          <div class="form-group">
-            <label for="pass-word" class="col-form-label"> Pass word: </label>
-            <input type="password" name="pass_word" class="form-control" id="pass-word" required>
-          </div>
-          <div class="form-group">
-            <label for="role-user" class="col-form-label"> Role user: </label>
-            <select name='role_user' class='form-control'>
-            {% for role in roles %}
-              <option value='{{role.id}}'> {{role.role_name}} </option>
-            {% endfor %}
-            </select>
-          </div>
-          <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
           <input id="mainButton" type="submit" style="display: none;">
         </form>
       </div>
@@ -100,4 +88,26 @@
     </div>
   </div>
 </div>
+
+<ul class="pagination justify-content-center mb-4">
+{% if targets.has_prev %}
+  <li class="page-item">
+    <a class="page-link" href="{{url_for('home.index')}}?page={{targets.prev_num}}">&larr; Prev</a>
+  </li>
+{% else %}
+  <li class="page-item disabled">
+    <a class="page-link" href="#" aria-disabled='true'>&larr; Prev</a>
+  </li>
+{% endif %}
+
+{% if targets.has_next %}
+  <li class="page-item">
+    <a class="page-link" href="{{url_for('home.index')}}?page={{targets.next_num}}">Next &rarr;</a>
+  </li>
+{% else %}
+  <li class="page-item disabled">
+    <a class="page-link" href="#">Next &rarr;</a>
+  </li>
+{% endif %}
+</ul>
 {% endblock %}

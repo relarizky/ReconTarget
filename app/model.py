@@ -44,11 +44,11 @@ class Target(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     id_user = db.Column(db.Integer, db.ForeignKey('tb_user.id'))
     target_url = db.Column(db.String(50), nullable = False)
-    target_comment = db.Column(db.String(20), nullable = True)
-    target_status_code = db.Column(db.String(3), default = '-')
+    target_server = db.Column(db.String(20))
+    target_country = db.Column(db.String(7))
+    target_status_code = db.Column(db.String(3))
     submited_at = db.Column(db.Date, default = datetime.utcnow)
 
-    def __init__(self, user, url = None, comment = None):
+    def __init__(self, user, url = None):
         self.user = user
         self.target_url = url
-        self.target_comment = comment

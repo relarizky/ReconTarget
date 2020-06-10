@@ -1,4 +1,5 @@
 from app.model import *
+from helper.general import *
 from flask_login import current_user, login_required
 from flask import Blueprint, render_template, request, url_for, flash
 
@@ -45,3 +46,63 @@ def edit_profile():
     else:
         roles = Role.query.all()
         return render_template('home/edit_profile.html', user = current_user, roles = roles)
+
+
+@home_bp.route('/add', methods = ['POST'])
+@login_required
+def add_target():
+    target_url  = request.form.get('target_url', '')
+
+    if not filter_target_form(target_url):
+        return redirect(url_for('home.index'))
+
+    check_conn = check_connection(target_url)
+    if check_conn == False:
+        return redirect(url_for('home.index'))
+
+    target = Target(current_user, target_url)
+    target.target_url = check_conn.get('url')
+    target.target_server = check_conn.get('server')
+    target.target_country = get_country(target_url)
+    target.target_status_code = check_conn.get('code')
+
+    db.session.add(target)
+    db.session.commit()
+
+    flash('success', 'Successfully add target.')
+    return redirect(url_for('home.index'))
+
+
+@home_bp.route('/delete/<int:id>')
+@login_required
+def delete_target(id):
+    target = Target.query.get(id)
+    if target != None:
+        db.session.delete(target)
+        db.session.commit()
+        flash('success', 'Successfully delete target.')
+        return redirect(url_for('home.index'))
+    else:
+        flash('error', 'Cant find target with id {}'.format(str(id)))
+        return redirect(url_for('home.index'))
+
+
+@home_bp.route('/check/<int:id>')
+@login_required
+def check_target_connection(id):
+    target = Target.query.get(id)
+
+    if target != None:
+        check_conn = check_connection(target.target_url)
+
+        target.target_url = check_conn.get('url')
+        target.target_server = check_conn.get('server')
+        target.target_status_code = check_conn.get('code')
+
+        db.session.add(target)
+        db.session.commit()
+
+        return redirect(url_for('home.index'))
+    else:
+        flash('error', 'Cant find target with id {}'.format(str(id)))
+        return redirect(url_for('home.index'))

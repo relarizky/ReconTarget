@@ -3,8 +3,8 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_wtf.csrf import CSRFProtect
 from flask_sqlalchemy import SQLAlchemy
-from helper.general import pascal_case, text_date
 from .configuration import Config
+from helper.general import *
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -20,6 +20,10 @@ migrate.init_app(app, sql)
 from .model import *
 from .register import *
 
+# route for file downloading
+@app.route('/getflag/<country>')
+def get_flag(country):
+    return get_flag_image(country)
 
 # error handler
 @app.errorhandler(401)

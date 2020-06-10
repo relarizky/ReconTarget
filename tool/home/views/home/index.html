@@ -21,6 +21,9 @@
 {% block header %} Dashboard {% endblock %}
 
 {% block body %}
+<button class='btn btn-sm btn-success py-2 px-3 my-1' data-toggle='modal' data-target='#myModal'>
+  <i class='fa fa-plus'> ADD TARGET </i>
+</button>
 <div class='table-responsive'>
   <table class='table table-sm table-hover text-center'>
     <thead style='background-color: #f8b739;'>
@@ -44,7 +47,7 @@
             <i class='fa fa-play'>CHECK</i>
           </a>
           <a href='#' class='btn btn-sm btn-warning'>
-            <i class='fa fa-play'>DOWNLOAD</i>
+            <i class='fa fa-download'>DOWNLOAD</i>
           </a>
           <a href='#' class='btn btn-sm btn-danger'>
             <i class='fa fa-remove'>DELETE</i>
@@ -53,5 +56,48 @@
     {% endfor %}
     </tbody>
   </table>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel">Add User</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action='{{url_for("dashboard_bp.add_user")}}' method='POST'>
+          <div class="form-group">
+            <label for="user-name" class="col-form-label"> User name: </label>
+            <input type="text" name="user_name" class="form-control" id="user-name" required>
+          </div>
+          <div class="form-group">
+            <label for="real-name" class="col-form-label"> Real name: </label>
+            <input type="text" name="real_name" class="form-control" id="real-name" required>
+          </div>
+          <div class="form-group">
+            <label for="pass-word" class="col-form-label"> Pass word: </label>
+            <input type="password" name="pass_word" class="form-control" id="pass-word" required>
+          </div>
+          <div class="form-group">
+            <label for="role-user" class="col-form-label"> Role user: </label>
+            <select name='role_user' class='form-control'>
+            {% for role in roles %}
+              <option value='{{role.id}}'> {{role.role_name}} </option>
+            {% endfor %}
+            </select>
+          </div>
+          <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+          <input id="mainButton" type="submit" style="display: none;">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button onclick="document.getElementById('mainButton').click();" type="button" class="btn btn-success">Submit</button>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}

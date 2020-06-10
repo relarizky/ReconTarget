@@ -10,10 +10,12 @@ app = Flask(__name__)
 app.config.from_object(Config)
 
 sql = SQLAlchemy()
+csrf = CSRFProtect()
 login = LoginManager()
 migrate = Migrate()
 
 sql.init_app(app)
+csrf.init_app(app)
 login.init_app(app)
 migrate.init_app(app, sql)
 

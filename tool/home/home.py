@@ -78,10 +78,14 @@ def add_target():
 def delete_target(id):
     target = Target.query.get(id)
     if target != None:
-        db.session.delete(target)
-        db.session.commit()
-        flash('success', 'Successfully delete target.')
-        return redirect(url_for('home.index'))
+        if target.id_user != current_user.id:
+            flash('error', 'You are not allowed to do that!')
+            return redirect(url_for('home.index'))
+        else:
+            db.session.delete(target)
+            db.session.commit()
+            flash('success', 'Successfully delete target.')
+            return redirect(url_for('home.index'))
     else:
         flash('error', 'Cant find target with id {}'.format(str(id)))
         return redirect(url_for('home.index'))

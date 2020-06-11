@@ -42,9 +42,43 @@
         <td> <img src='{{url_for("get_flag", country = revip.target_country)}}'> </td>
         <td> {{revip.submited_at | text_date}} </td>
         <td>
-          <a href='{{url_for("home.reverse_ip_scan", id = revip.id)}}' class='btn btn-sm btn-info' title='start reverse ip'>
+          <a href='#' data-target='#myModal{{revip.id}}' data-toggle='modal' class='btn btn-sm btn-info' title='start reverse ip'>
             <span class='fa fa-play'></span>
           </a>
+          <div class="modal fade" id="myModal{{revip.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel{{revip.id}}" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="myModalLabel{{revip.id}}">Reverse IP</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body text-justify">
+                  <form action='{{url_for("home.reverse_ip_scan", id = revip.id)}}' method='POST'>
+                    <div class="form-group">
+                      <label for="target-url" class="col-form-label"> Target URL: </label>
+                      <input type="text" name="target_url" placeholder="http://target.com/" value="{{revip.target_url}}" class="form-control" id="target-url" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label for="target-url" class="col-form-label"> Tools: </label>
+                      <select name="tools" class="form-control">
+                        <option value="bing">Bing</option>
+                        <option value="you_get_signal">YouGetSignal</option>
+                        <option value="hacker_target">Hacker Target</option>
+                      </select>
+                    </div>
+                    <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                    <input id="mainButton{{revip.id}}" type="submit" style="display: none;">
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button onclick="document.getElementById('mainButton{{revip.id}}').click();" type="button" class="btn btn-success">Scan</button>
+                </div>
+              </div>
+            </div>
+          </div>
           <a href='#' class='btn btn-sm btn-warning' title='download revip list'>
             <span class='fa fa-download'></span>
           </a>

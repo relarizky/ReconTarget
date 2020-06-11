@@ -13,9 +13,9 @@ class ReverseIP():
         self.agent = 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:70.0) Gecko/20100101 Firefox/70.0'
 
     def bing(self):
-        page, pages = 0, 300
-        query = encode('ip: {}'.format(get_info(self.site, 'ip')))
+        page, pages = 0, 500
         regex = re.compile(r'\<h2\>\<a href="(.*?)" h=".*?"\>')
+        query = encode('ip: {}'.format(get_info(self.site, info = 'ip')))
         found = set()
 
         while (page <= pages):
@@ -33,10 +33,31 @@ class ReverseIP():
         return list(found)
 
     def you_get_signal(self):
-        pass
+        url = 'https://domains.yougetsignal.com/domains.php'
+        domain = get_info(self.site, info = 'domain')
+        post_data = {'remoteAddress' : domain, 'key' : ''}
+
+        with requests.post(url, data = post_data, headers = {'user-agent' : self.agent}) as request:
+            if request.status_code == 200:
+                json = request.json()
+                if json.get('status') == 'Success':
+                    fetch_domain = lambda x : x[0]
+                    return [fetch_domain(domain) for domain in json.get('domainArray')]
+                else:
+                    return []
+            else:
+                return []
 
     def hacker_target(self):
-        pass
+        url = 'http://api.hackertarget.com/reverseiplookup/'
+        domain = get_info(self.site, info = 'domain')
+        query_string = {'q' : domain}
 
-    def view_dns(self):
-        pass
+        with requests.get(url, params = query_string, headers = {'user-agent' : self.agent}) as request:
+            if request.status_code == 200:
+                if not ('No DNS' in request.text or 'error' in request.text):
+                    return request.text.split('\n')
+                else:
+                    return []
+            else:
+                return []

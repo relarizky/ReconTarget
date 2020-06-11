@@ -14,15 +14,24 @@ def reverse_ip_index():
     return render_template('home/revip/list_target.html', revips = revip)
 
 
-@home_bp.route('/revip/scan/<int:id>')
+@home_bp.route('/revip/scan/<int:id>', methods = ['POST'])
 @login_required
 def reverse_ip_scan(id):
     target = Target.query.get(id)
+    tools = request.form.get('tools')
 
     if target != None:
         try:
             revip = ReverseIP(target.target_url)
-            revip = revip.bing()
+            if tools == 'bing':
+                revip = revip.bing()
+            elif tools == 'you_get_signal':
+                revip = revip.you_get_signal()
+            elif tools == 'hacker_target':
+                revip = revip.hacker_target()
+            else:
+                flash('error', 'Specify appropriate tool!')
+                return redirect(url_for('home.reverse_ip_index'))
         except Exception as Error:
             flash('error', 'Fail to do reverse ip bcz, {}'.format(Error))
             return redirect(url_for('home.reverse_ip_index'))

@@ -60,11 +60,17 @@ def check_connection(url):
             'server' : '-'
         }
 
+def get_info(url, info = None):
+    domain = tld.get_tld(url, as_object = True).parsed_url.netloc
+    if info == 'domain':
+        return domain
+    else:
+        return socket.gethostbyname(domain)
+
 
 def get_country(site):
     try:
-        domain = tld.get_tld(site, as_object = True)
-        ip = socket.gethostbyname(domain.parsed_url.netloc)
+        ip = get_info(site, info = 'ip')
         agent = {'user-agent' : 'Mozilla/5.0'}
 
         with requests.get('https://ipinfo.io/{}/json'.format(ip), headers = agent) as request:
@@ -99,9 +105,8 @@ def get_flag_image(country):
     return send_from_directory(directory, filename = country.lower() + '.png')
 
 
-def get_json_length(value):
+def get_list_length(value):
     try:
-        value = json.loads(value)
-    except Exception:
+        return len(value)
+    except Exception as Error:
         return 0
-    return len(value)

@@ -37,12 +37,12 @@
     {% for revip in revips.items %}
       <tr>
         <td> {{revip.target_url}} </td>
-        <td> {{revip.revip.first().list_domain | json_length}}
+        <td> {{revip.revip.first().list_domain | list_length}}
         <td> {{revip.target_status_code}} </td>
         <td> <img src='{{url_for("get_flag", country = revip.target_country)}}'> </td>
         <td> {{revip.submited_at | text_date}} </td>
         <td>
-          <a href='{{url_for("home.check_target_connection", id = revip.id)}}' class='btn btn-sm btn-info' title='start reverse ip'>
+          <a href='{{url_for("home.reverse_ip_scan", id = revip.id)}}' class='btn btn-sm btn-info' title='start reverse ip'>
             <span class='fa fa-play'></span>
           </a>
           <a href='#' class='btn btn-sm btn-warning' title='download revip list'>

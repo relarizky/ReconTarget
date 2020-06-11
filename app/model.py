@@ -66,4 +66,4 @@ class RevIP(db.Model):
 
     def __init__(self, target, domains = []):
         self.target = target
-        self.list_domain = json.dumps(domains)
+        self.list_domain = domains

@@ -43,6 +43,6 @@ def human_readable_date(value):
     return text_date(value)
 
 
-@app.template_filter('json_length')
-def json_length(value):
-    return get_json_length(value)
+@app.template_filter('list_length')
+def list_length(value):
+    return get_list_length(value)

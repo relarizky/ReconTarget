@@ -1,0 +1,81 @@
+{% extends 'template.html' %}
+
+{% block navbar %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+
+    <button type="button" id="sidebarCollapse" class="btn btn-primary">
+      <i class="fa fa-bars"></i>
+      <span class="sr-only">Toggle Menu</span>
+    </button>
+      <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <i class="fa fa-bars"></i>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      </div>
+  </div>
+</nav>
+{% endblock %}
+
+{% block header %} Reverse IP {% endblock %}
+
+{% block body %}
+<div class='table-responsive'>
+  <table class='table table-sm table-hover text-center'>
+    <thead style='background-color: #f8b739;'>
+      <tr>
+        <td> URL </td>
+        <td> SAME SERVER COUNTS </td>
+        <td> STATUS </td>
+        <td> COUNTRY </td>
+        <td> SUBMITED AT </td>
+        <td> ACTION </td>
+      </tr>
+    </thead>
+    <tbody>
+    {% for revip in revips.items %}
+      <tr>
+        <td> {{revip.target_url}} </td>
+        <td> {{revip.revip.first().list_domain | json_length}}
+        <td> {{revip.target_status_code}} </td>
+        <td> <img src='{{url_for("get_flag", country = revip.target_country)}}'> </td>
+        <td> {{revip.submited_at | text_date}} </td>
+        <td>
+          <a href='{{url_for("home.check_target_connection", id = revip.id)}}' class='btn btn-sm btn-info' title='start reverse ip'>
+            <span class='fa fa-play'></span>
+          </a>
+          <a href='#' class='btn btn-sm btn-warning' title='download revip list'>
+            <span class='fa fa-download'></span>
+          </a>
+          <a href='#' class='btn btn-sm btn-secondary' title='view raw revip list'>
+            <span class='fa fa-eye'></span>
+          </a>
+        </td>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<ul class="pagination justify-content-center mb-4">
+{% if revips.has_prev %}
+  <li class="page-item">
+    <a class="page-link" href="{{url_for('home.reverse_ip_index')}}?page={{revips.prev_num}}">&larr; Prev</a>
+  </li>
+{% else %}
+  <li class="page-item disabled">
+    <a class="page-link" href="#" aria-disabled='true'>&larr; Prev</a>
+  </li>
+{% endif %}
+
+{% if revips.has_next %}
+  <li class="page-item">
+    <a class="page-link" href="{{url_for('home.reverse_ip_index')}}?page={{revips.next_num}}">Next &rarr;</a>
+  </li>
+{% else %}
+  <li class="page-item disabled">
+    <a class="page-link" href="#">Next &rarr;</a>
+  </li>
+{% endif %}
+</ul>
+{% endblock %}

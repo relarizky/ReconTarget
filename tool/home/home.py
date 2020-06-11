@@ -6,6 +6,7 @@ from flask import Blueprint, render_template, request, url_for, flash
 home_bp = Blueprint('home', __name__, template_folder = 'views')
 
 from .user import *
+from .reverse_ip import *
 
 @home_bp.route('/')
 @home_bp.route('/index')

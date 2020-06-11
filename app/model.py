@@ -1,7 +1,8 @@
-import bcrypt
+import bcrypt, json
 from app import sql as db
 from datetime import datetime
 from flask_login import UserMixin
+from sqlalchemy.dialects.mysql import JSON
 
 class Role(db.Model):
     __tablename__ = 'tb_role'
@@ -49,6 +50,20 @@ class Target(db.Model):
     target_status_code = db.Column(db.String(3))
     submited_at = db.Column(db.Date, default = datetime.utcnow)
 
+    revip = db.relationship('RevIP', backref = 'target', lazy = 'dynamic')
+
     def __init__(self, user, url = None):
         self.user = user
         self.target_url = url
+
+
+class RevIP(db.Model):
+    __tablename__ = 'tb_revip'
+
+    id = db.Column(db.Integer, primary_key = True)
+    id_target = db.Column(db.Integer, db.ForeignKey('tb_target.id'))
+    list_domain = db.Column(JSON)
+
+    def __init__(self, target, domains = []):
+        self.target = target
+        self.list_domain = json.dumps(domains)

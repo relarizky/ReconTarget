@@ -41,3 +41,8 @@ def convert_text(value):
 @app.template_filter('text_date')
 def human_readable_date(value):
     return text_date(value)
+
+
+@app.template_filter('json_length')
+def json_length(value):
+    return get_json_length(value)

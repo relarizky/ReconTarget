@@ -91,3 +91,11 @@ def filter_target_form(target_url):
 def get_flag_image(country):
     directory = os.getcwd() + '/tool/auth/assets/images/flags/'
     return send_from_directory(directory, filename = country.lower() + '.png')
+
+
+def get_json_length(value):
+    try:
+        value = json.loads(value)
+    except Exception:
+        return 0
+    return len(value)

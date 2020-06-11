@@ -23,7 +23,7 @@ from .model import *
 from .register import *
 
 # route for file downloading
-@app.route('/getflag/<country>')
+@app.route('/flag/<country>')
 def get_flag(country):
     return get_flag_image(country)
 

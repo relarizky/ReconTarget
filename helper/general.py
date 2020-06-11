@@ -54,21 +54,27 @@ def check_connection(url):
             'server' : request.headers.get('server') if 'server' in request.headers else '-'
         }
     except requests.exceptions.RequestException as Error:
-        flash('error', 'Fail to input URL because, {}'.format(Error))
-        return False
+        return {
+            'url' : url,
+            'code' : 'dead',
+            'server' : '-'
+        }
 
 
 def get_country(site):
-    domain = tld.get_tld(site, as_object = True)
-    ip = socket.gethostbyname(domain.parsed_url.netloc)
-    agent = {'user-agent' : 'Mozilla/5.0'}
+    try:
+        domain = tld.get_tld(site, as_object = True)
+        ip = socket.gethostbyname(domain.parsed_url.netloc)
+        agent = {'user-agent' : 'Mozilla/5.0'}
 
-    with requests.get('https://ipinfo.io/{}/json'.format(ip), headers = agent) as request:
-        json = request.json()
-        if 'country' not in json:
-            return 'unknown'
-        else:
-            return json.get('country').lower()
+        with requests.get('https://ipinfo.io/{}/json'.format(ip), headers = agent) as request:
+            json = request.json()
+            if 'country' not in json:
+                return 'unknown'
+            else:
+                return json.get('country').lower()
+    except Exception as Error:
+        return 'unknown'
 
 
 def filter_target_form(target_url):

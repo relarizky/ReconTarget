@@ -47,7 +47,7 @@ class Target(db.Model):
     target_url = db.Column(db.String(50), nullable = False)
     target_server = db.Column(db.String(20))
     target_country = db.Column(db.String(7))
-    target_status_code = db.Column(db.String(3))
+    target_status_code = db.Column(db.String(4))
     submited_at = db.Column(db.Date, default = datetime.utcnow)
 
     revip = db.relationship('RevIP', backref = 'target', lazy = 'dynamic')

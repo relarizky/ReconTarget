@@ -58,8 +58,6 @@ def add_target():
         return redirect(url_for('home.index'))
 
     check_conn = check_connection(target_url)
-    if check_conn == False:
-        return redirect(url_for('home.index'))
 
     target = Target(current_user, target_url)
     target.target_url = check_conn.get('url')
@@ -99,14 +97,11 @@ def check_target_connection(id):
 
     if target != None:
         check_conn = check_connection(target.target_url)
-
         target.target_url = check_conn.get('url')
-        target.target_server = check_conn.get('server')
         target.target_status_code = check_conn.get('code')
 
         db.session.add(target)
         db.session.commit()
-
         return redirect(url_for('home.index'))
     else:
         flash('error', 'Cant find target with id {}'.format(str(id)))

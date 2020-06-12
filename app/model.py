@@ -67,3 +67,15 @@ class RevIP(db.Model):
     def __init__(self, target, domains = []):
         self.target = target
         self.list_domain = domains
+
+
+class WPUser(db.Model):
+    __tablename__ = 'tb_wpuser'
+
+    id = db.Column(db.Integer, primary_key = True)
+    id_target = db.Column(db.Integer, db.ForeignKey('tb_target.id'))
+    list_username = db.Column(JSON)
+
+    def __init__(self, target, usernames = []):
+        self.target = target
+        self.list_username = usernames

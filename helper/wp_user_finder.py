@@ -20,4 +20,23 @@ class WPUserFinder:
                 return []
 
     def find_from_author_page(self):
-        pass
+        count = 1
+        end_point  = '/?author='
+        target_url = self.target_url
+        found_username = set()
+
+        while True:
+            url_endpoint = target_url + end_point + str(count)
+            with requests.get(url_endpoint, headers = {'user-agent' : self.user_agent}, allow_redirects = True) as request:
+                if request.status_code == 200:
+                    if request.url != url_endpoint:
+                        user_name = request.url
+                        user_name = user_name.split('/')[-2]
+                        found_username.add(user_name)
+                    else:
+                        break
+                else:
+                    break
+            count += 1
+
+        return list(found_username)

@@ -23,7 +23,7 @@ class User(db.Model, UserMixin):
     real_name = db.Column(db.String(40), nullable = False, unique = True)
     user_name = db.Column(db.String(20), nullable = False, unique = True)
     pass_word = db.Column(db.String(63), nullable = False)
-    target = db.relationship('Target', backref = 'user', lazy = 'dynamic')
+    target = db.relationship('Target', backref = 'user', lazy = 'dynamic', cascade = 'all, delete')
 
     def secure_password(self, plaintext):
         pass_salt = bcrypt.gensalt()
@@ -50,7 +50,7 @@ class Target(db.Model):
     target_status_code = db.Column(db.String(4))
     submited_at = db.Column(db.Date, default = datetime.utcnow)
 
-    revip = db.relationship('RevIP', backref = 'target', lazy = 'dynamic')
+    revip = db.relationship('RevIP', backref = 'target', lazy = 'dynamic', cascade='all, delete')
 
     def __init__(self, user, url = None):
         self.user = user

@@ -2,7 +2,6 @@ import re
 import tld
 import requests
 
-from flask import flash
 from helper.general import get_info
 from requests.utils import requote_uri as encode
 

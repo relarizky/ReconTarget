@@ -79,12 +79,21 @@
               </div>
             </div>
           </div>
-          <a href='#' class='btn btn-sm btn-warning' title='download revip list'>
+        {% if revip.revip.first() != None %}
+          <a href='{{url_for("home.reverse_ip_download", id = revip.id)}}' class='btn btn-sm btn-warning' title='download revip list'>
             <span class='fa fa-download'></span>
           </a>
-          <a href='#' class='btn btn-sm btn-secondary' title='view raw revip list'>
+          <a href='{{url_for("home.reverse_ip_view_raw", id = revip.id)}}' class='btn btn-sm btn-secondary' title='view raw revip list'>
             <span class='fa fa-eye'></span>
           </a>
+        {% else %}
+          <a href='#' class='btn btn-sm btn-warning disabled' title='download revip list'>
+            <span class='fa fa-download'></span>
+          </a>
+          <a href='#' class='btn btn-sm btn-secondary disabled' title='view raw revip list'>
+            <span class='fa fa-eye'></span>
+          </a>
+        {% endif %}
         </td>
     {% endfor %}
     </tbody>

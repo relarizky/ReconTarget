@@ -42,14 +42,20 @@
         <td> <img src='{{url_for("get_flag", country = wpuser.target_country)}}'> </td>
         <td> {{wpuser.submited_at | text_date}} </td>
         <td>
+        {% if wpuser.target_status_code == 'dead' %}
+          <a href='#' class='btn btn-sm btn-info disabled' title='start scan for username'>
+            <span class='fa fa-play'></span>
+          </a>
+        {% else %}
           <a href='{{url_for("home.wp_user_finder_scan", id = wpuser.id)}}' class='btn btn-sm btn-info' title='start scan for username'>
             <span class='fa fa-play'></span>
           </a>
+        {% endif %}
         {% if wpuser.wpuser.first() != None %}
-          <a href='#' class='btn btn-sm btn-warning' title='download wp user list'>
+          <a href='{{url_for("home.wp_user_finder_download", id = wpuser.id)}}' class='btn btn-sm btn-warning' title='download wp user list'>
             <span class='fa fa-download'></span>
           </a>
-          <a href='#' class='btn btn-sm btn-secondary' title='view raw wp user list'>
+          <a href='{{url_for("home.wp_user_finder_view_raw", id = wpuser.id)}}' class='btn btn-sm btn-secondary' title='view raw wp user list'>
             <span class='fa fa-eye'></span>
           </a>
         {% else %}

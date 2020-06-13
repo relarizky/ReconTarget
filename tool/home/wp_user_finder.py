@@ -24,22 +24,84 @@ def wp_user_finder_scan(id):
     target = Target.query.get(id)
 
     if target != None:
-        wp_users = WPUserFinder(target.target_url)
-        wp_users = set(wp_users.find_from_wp_json() + wp_users.find_from_author_page())
-        wp_users = list(wp_users)
+        try:
+            wp_users = WPUserFinder(target.target_url)
+            wp_users = set(wp_users.find_from_wp_json() + wp_users.find_from_author_page())
+            wp_users = list(wp_users)
+
+            if target.wpuser.first() == None:
+                wp_user = WPUser(target, wp_users)
+                db.session.add(wp_user)
+                db.session.commit()
+            else:
+                wp_user = WPUser.query.get(target.wpuser.first().id)
+                wp_user.list_username = wp_users
+                db.session.add(wp_user)
+                db.session.commit()
+        except Exception as Error:
+            flash('error', 'Failed to fetch username bcz, {}'.format(Error))
+            return redirect(url_for('home.wp_user_finder_index'))
+        else:
+            flash('success', 'Found {} usernames in {}'.format(str(len(wp_users)), target.target_url))
+            return redirect(url_for('home.wp_user_finder_index'))
+    else:
+        flash('error', 'Cant find target with id {}'.format(str(id)))
+        return redirect(url_for('home.wp_user_finder_index'))
+
+
+@home_bp.route('/wpuserfinder/download/<int:id>')
+@login_required
+def wp_user_finder_download(id):
+    tempfile.tempdir = os.getcwd()
+    target = Target.query.get(id)
+
+    if target != None:
+        if target.id_user != current_user.id:
+            flash('error', 'You are not allowed to do that!')
+            return redirect(url_for('home.wp_user_finder_index'))
 
         if target.wpuser.first() == None:
-            wp_user = WPUser(target, wp_users)
-            db.session.add(wp_user)
-            db.session.commit()
-        else:
-            wp_user = WPUser.query.get(target.wpuser.first().id)
-            wp_user.list_username = wp_users
-            db.session.add(wp_user)
-            db.session.commit()
+            flash('error', 'You have not done any scan this target')
+            return redirect(url_for('home.wp_user_finder_index'))
 
-        flash('success', 'Found {} usernames in {}'.format(str(len(wp_users)), target.target_url))
+        with tempfile.TemporaryDirectory() as temp_dir:
+            tempfile.tempdir = temp_dir
+            file_name = 'wpuser_' + get_info(target.target_url, info = 'domain') + '.txt'
+            file_object = tempfile.NamedTemporaryFile(mode = 'w+t')
+            file_content = target.wpuser.first().list_username
+
+            try:
+                file_object.writelines('\n'.join(file_content))
+                file_object.seek(0)
+                response = send_file(file_object.name,
+                    mimetype='text/plain',
+                    as_attachment = True,
+                    attachment_filename = file_name)
+                response.headers['Content-Length'] = os.path.getsize(file_object.name)
+                response.headers['Cache-Control'] = 'no-cache'
+            finally:
+                file_object.close()
+
+            return response
+    else:
+        flash('error', 'Cant find target with id {}'.format(str(id)))
         return redirect(url_for('home.wp_user_finder_index'))
+
+
+@home_bp.route('/wpuserfinder/view_raw/<int:id>')
+@login_required
+def wp_user_finder_view_raw(id):
+    target = Target.query.get(id)
+
+    if target != None:
+        if target.id_user != current_user.id:
+            flash('error', 'You are not allowed to do that!')
+            return redirect(url_for('home.wp_user_finder_index'))
+        elif target.wpuser.first() == None:
+            flash('error', 'You have not done any scan to this target')
+            return redirect(url_for('home.wp_user_finder_index'))
+        else:
+            return '<br>'.join(target.wpuser.first().list_username)
     else:
         flash('error', 'Cant find target with id {}'.format(str(id)))
         return redirect(url_for('home.wp_user_finder_index'))

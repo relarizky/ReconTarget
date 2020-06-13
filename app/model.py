@@ -51,6 +51,7 @@ class Target(db.Model):
     submited_at = db.Column(db.Date, default = datetime.utcnow)
 
     revip = db.relationship('RevIP', backref = 'target', lazy = 'dynamic', cascade='all, delete')
+    wpuser = db.relationship('WPUser', backref = 'target', lazy = 'dynamic', cascade='all, delete')
 
     def __init__(self, user, url = None):
         self.user = user

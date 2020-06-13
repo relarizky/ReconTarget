@@ -18,7 +18,7 @@
 </nav>
 {% endblock %}
 
-{% block header %} Reverse IP {% endblock %}
+{% block header %} Wordpress User Finder {% endblock %}
 
 {% block body %}
 <div class='table-responsive'>
@@ -26,7 +26,7 @@
     <thead style='background-color: #f8b739;'>
       <tr>
         <td> URL </td>
-        <td> SAME SERVER COUNTS </td>
+        <td> FOUND USERNAME </td>
         <td> STATUS </td>
         <td> COUNTRY </td>
         <td> SUBMITED AT </td>
@@ -34,63 +34,29 @@
       </tr>
     </thead>
     <tbody>
-    {% for revip in revips.items %}
+    {% for wpuser in wpusers.items %}
       <tr>
-        <td> {{revip.target_url}} </td>
-        <td> {{revip.revip.first().list_domain | list_length}}
-        <td> {{revip.target_status_code}} </td>
-        <td> <img src='{{url_for("get_flag", country = revip.target_country)}}'> </td>
-        <td> {{revip.submited_at | text_date}} </td>
+        <td> {{wpuser.target_url}} </td>
+        <td> {{wpuser.wpuser.first().list_username | list_length}}
+        <td> {{wpuser.target_status_code}} </td>
+        <td> <img src='{{url_for("get_flag", country = wpuser.target_country)}}'> </td>
+        <td> {{wpuser.submited_at | text_date}} </td>
         <td>
-          <a href='#' data-target='#myModal{{revip.id}}' data-toggle='modal' class='btn btn-sm btn-info' title='start reverse ip'>
+          <a href='{{url_for("home.wp_user_finder_scan", id = wpuser.id)}}' class='btn btn-sm btn-info' title='start scan for username'>
             <span class='fa fa-play'></span>
           </a>
-          <div class="modal fade" id="myModal{{revip.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel{{revip.id}}" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="myModalLabel{{revip.id}}">Reverse IP</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body text-justify">
-                  <form action='{{url_for("home.reverse_ip_scan", id = revip.id)}}' method='POST'>
-                    <div class="form-group">
-                      <label for="target-url" class="col-form-label"> Target URL: </label>
-                      <input type="text" name="target_url" placeholder="http://target.com/" value="{{revip.target_url}}" class="form-control" id="target-url" readonly>
-                    </div>
-                    <div class="form-group">
-                      <label for="target-url" class="col-form-label"> Tools: </label>
-                      <select name="tools" class="form-control">
-                        <option value="bing">Bing</option>
-                        <option value="you_get_signal">YouGetSignal</option>
-                        <option value="hacker_target">Hacker Target</option>
-                      </select>
-                    </div>
-                    <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
-                    <input id="mainButton{{revip.id}}" type="submit" style="display: none;">
-                  </form>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button onclick="document.getElementById('mainButton{{revip.id}}').click();" type="button" class="btn btn-success">Scan</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        {% if revip.revip.first() != None %}
-          <a href='{{url_for("home.reverse_ip_download", id = revip.id)}}' class='btn btn-sm btn-warning' title='download revip list'>
+        {% if wpuser.wpuser.first() != None %}
+          <a href='#' class='btn btn-sm btn-warning' title='download wp user list'>
             <span class='fa fa-download'></span>
           </a>
-          <a href='{{url_for("home.reverse_ip_view_raw", id = revip.id)}}' class='btn btn-sm btn-secondary' title='view raw revip list'>
+          <a href='#' class='btn btn-sm btn-secondary' title='view raw wp user list'>
             <span class='fa fa-eye'></span>
           </a>
         {% else %}
-          <a href='#' class='btn btn-sm btn-warning disabled' title='download revip list'>
+          <a href='#' class='btn btn-sm btn-warning disabled' title='download wpuser list'>
             <span class='fa fa-download'></span>
           </a>
-          <a href='#' class='btn btn-sm btn-secondary disabled' title='view raw revip list'>
+          <a href='#' class='btn btn-sm btn-secondary disabled' title='view raw wpuser list'>
             <span class='fa fa-eye'></span>
           </a>
         {% endif %}
@@ -101,9 +67,9 @@
 </div>
 
 <ul class="pagination justify-content-center mb-4">
-{% if revips.has_prev %}
+{% if wpusers.has_prev %}
   <li class="page-item">
-    <a class="page-link" href="{{url_for('home.reverse_ip_index')}}?page={{revips.prev_num}}">&larr; Prev</a>
+    <a class="page-link" href="{{url_for('home.reverse_ip_index')}}?page={{wpusers.prev_num}}">&larr; Prev</a>
   </li>
 {% else %}
   <li class="page-item disabled">
@@ -111,9 +77,9 @@
   </li>
 {% endif %}
 
-{% if revips.has_next %}
+{% if wpusers.has_next %}
   <li class="page-item">
-    <a class="page-link" href="{{url_for('home.reverse_ip_index')}}?page={{revips.next_num}}">Next &rarr;</a>
+    <a class="page-link" href="{{url_for('home.reverse_ip_index')}}?page={{wpusers.next_num}}">Next &rarr;</a>
   </li>
 {% else %}
   <li class="page-item disabled">

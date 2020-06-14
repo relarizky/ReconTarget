@@ -39,13 +39,17 @@ def reverse_ip_scan(id):
             flash('error', 'Fail to do reverse ip bcz, {}'.format(Error))
             return redirect(url_for('home.reverse_ip_index'))
 
-        if target.revip.all() == []:
-            tb_revip = RevIP(target, revip)
+        if len(revip) != 0
+            if target.revip.all() == []:
+                tb_revip = RevIP(target, revip)
+            else:
+                tb_revip = RevIP.query.get(target.revip.first().id)
+                old_list = target.revip.first().list_domain
+                new_list = set(old_list + revip) # remove duplicate
+                tb_revip.list_domain = list(new_list)
         else:
-            tb_revip = RevIP.query.get(target.revip.first().id)
-            old_list = target.revip.first().list_domain
-            new_list = set(old_list + revip) # remove duplicate
-            tb_revip.list_domain = list(new_list)
+            flash('error', 'No other domain found in same server')
+            return redirect(url_for('home.reverse_ip_index'))
 
         db.session.add(tb_revip)
         db.session.commit()

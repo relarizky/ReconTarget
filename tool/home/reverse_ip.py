@@ -39,7 +39,7 @@ def reverse_ip_scan(id):
             flash('error', 'Fail to do reverse ip bcz, {}'.format(Error))
             return redirect(url_for('home.reverse_ip_index'))
 
-        if len(revip) != 0
+        if len(revip) != 0:
             if target.revip.all() == []:
                 tb_revip = RevIP(target, revip)
             else:

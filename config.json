@@ -1,7 +1,7 @@
 {
-    "SECRET_KEY"     : "boedoet31337",
-    "MYSQL_HOSTNAME" : "localhost",
-    "MYSQL_USERNAME" : "python",
-    "MYSQL_PASSWORD" : "gkdipassword",
-    "MYSQL_DB_NAME"  : "recon_tools"
+    "SECRET_KEY"     : "<your_secret_key>",
+    "MYSQL_HOSTNAME" : "<your_mysql_hostname>",
+    "MYSQL_USERNAME" : "<your_mysql_username>",
+    "MYSQL_PASSWORD" : "<your_mysql_password>",
+    "MYSQL_DB_NAME"  : "<your_mysql_database>"
 }

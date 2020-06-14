@@ -24,6 +24,9 @@ def reverse_ip_scan(id):
     tools = request.form.get('tools')
 
     if target != None:
+        if target.target_status_code == 'dead':
+            flash('error', 'The site seems to be dead')
+            return redirect(url_for('home.reverse_ip_index'))
         try:
             revip = ReverseIP(target.target_url)
             if tools == 'bing':

@@ -1,4 +1,4 @@
-{% extends 'template.html' %}
+  {% extends 'template.html' %}
 
 {% block navbar %}
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -42,6 +42,11 @@
         <td> <img src='{{url_for("get_flag", country = revip.target_country)}}'> </td>
         <td> {{revip.submited_at | text_date}} </td>
         <td>
+        {% if revip.target_status_code == 'dead' %}
+          <a href='#' class='btn btn-sm btn-info disabled' title='start reverse ip'>
+            <span class='fa fa-play'></span>
+          </a>
+        {% else %}
           <a href='#' data-target='#myModal{{revip.id}}' data-toggle='modal' class='btn btn-sm btn-info' title='start reverse ip'>
             <span class='fa fa-play'></span>
           </a>
@@ -79,6 +84,7 @@
               </div>
             </div>
           </div>
+        {% endif %}
         {% if revip.revip.first() != None %}
           <a href='{{url_for("home.reverse_ip_download", id = revip.id)}}' class='btn btn-sm btn-warning' title='download revip list'>
             <span class='fa fa-download'></span>

@@ -24,6 +24,9 @@ def wp_user_finder_scan(id):
     target = Target.query.get(id)
 
     if target != None:
+        if target.target_status_code == 'dead':
+            flash('error', 'The site seems to be dead')
+            return redirect(url_for('home.wp_user_finder_index'))
         try:
             wp_users = WPUserFinder(target.target_url)
             wp_users = set(wp_users.find_from_wp_json() + wp_users.find_from_author_page())

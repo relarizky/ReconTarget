@@ -1,7 +1,0 @@
-{
-    "SECRET_KEY"     : "<your secret key>",
-    "MYSQL_HOSTNAME" : "<your mysql hostname>",
-    "MYSQL_USERNAME" : "<your mysql username>",
-    "MYSQL_PASSWORD" : "<your mysql password>",
-    "MYSQL_DB_NAME"  : "<your mysql database>"
-}

@@ -7,4 +7,5 @@ flask_sqlalchemy
 tld
 bcrypt
 requests
+gunicorn
 mysqlclient

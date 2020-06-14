@@ -4,7 +4,7 @@ from helper.general import get_config
 class Config(object):
 
     # General Configuration
-    #DEBUG = False
+    DEBUG = True
     CONFIG = os.getcwd() + '/config.json'
     SECRET_KEY = get_config('SECRET_KEY')
 

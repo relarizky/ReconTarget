@@ -29,16 +29,15 @@ def wp_user_finder_scan(id):
             wp_users = set(wp_users.find_from_wp_json() + wp_users.find_from_author_page())
             wp_users = list(wp_users)
 
-            if len(wp_users) != 0:
-                if target.wpuser.first() == None:
-                    wp_user = WPUser(target, wp_users)
-                    db.session.add(wp_user)
-                    db.session.commit()
-                else:
-                    wp_user = WPUser.query.get(target.wpuser.first().id)
-                    wp_user.list_username = wp_users
-                    db.session.add(wp_user)
-                    db.session.commit()
+            if target.wpuser.first() == None:
+                wp_user = WPUser(target, wp_users)
+                db.session.add(wp_user)
+                db.session.commit()
+            else:
+                wp_user = WPUser.query.get(target.wpuser.first().id)
+                wp_user.list_username = wp_users
+                db.session.add(wp_user)
+                db.session.commit()
         except Exception as Error:
             flash('error', 'Failed to fetch username bcz, {}'.format(Error))
             return redirect(url_for('home.wp_user_finder_index'))

@@ -4,6 +4,7 @@ flask_login
 flask_migrate
 flask_sqlalchemy
 
+tld
 bcrypt
 requests
 mysqlclient

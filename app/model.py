@@ -52,6 +52,7 @@ class Target(db.Model):
 
     revip = db.relationship('RevIP', backref = 'target', lazy = 'dynamic', cascade='all, delete')
     wpuser = db.relationship('WPUser', backref = 'target', lazy = 'dynamic', cascade='all, delete')
+    dnslookup = db.relationship('DNSLookup', backref = 'target', lazy = 'dynamic', cascade = 'all, delete')
 
     def __init__(self, user, url = None):
         self.user = user
@@ -80,3 +81,17 @@ class WPUser(db.Model):
     def __init__(self, target, usernames = []):
         self.target = target
         self.list_username = usernames
+
+
+class DNSLookup(db.Model):
+    __tablename__ = 'tb_dnslookup'
+
+    id = db.Column(db.Integer, primary_key = True)
+    id_target = db.Column(db.Integer, db.ForeignKey('tb_target.id'))
+    has_scanned = db.Column(db.Boolean, default = False)
+    dnslookup_result = db.Column(db.Text)
+
+    def __init__(self, target, has_scanned = False, result = None):
+        self.target = target
+        self.has_scanned = has_scanned
+        self.dnslookup_result = result

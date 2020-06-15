@@ -75,7 +75,7 @@
 <ul class="pagination justify-content-center mb-4">
 {% if wpusers.has_prev %}
   <li class="page-item">
-    <a class="page-link" href="{{url_for('home.reverse_ip_index')}}?page={{wpusers.prev_num}}">&larr; Prev</a>
+    <a class="page-link" href="{{url_for('home.wp_user_finder_index')}}?page={{wpusers.prev_num}}">&larr; Prev</a>
   </li>
 {% else %}
   <li class="page-item disabled">
@@ -85,7 +85,7 @@
 
 {% if wpusers.has_next %}
   <li class="page-item">
-    <a class="page-link" href="{{url_for('home.reverse_ip_index')}}?page={{wpusers.next_num}}">Next &rarr;</a>
+    <a class="page-link" href="{{url_for('home.wp_user_finder_index')}}?page={{wpusers.next_num}}">Next &rarr;</a>
   </li>
 {% else %}
   <li class="page-item disabled">

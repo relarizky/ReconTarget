@@ -15,3 +15,4 @@ from flask import Blueprint, render_template, request, url_for, redirect, flash,
 def dns_lookup_index():
     page = request.args.get('page', 1, type = int)
     dnslookup = Target.query.filter_by(id_user = current_user.id).paginate(page, 5, False)
+    return render_template('home/dnslookup/list_target.html', dnslookups = dnslookup)

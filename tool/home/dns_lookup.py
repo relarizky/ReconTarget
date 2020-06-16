@@ -44,7 +44,7 @@ def dns_lookup_scan(id):
         db.session.add(dns_lookup)
         db.session.commit()
 
-        flash('success', 'Successfully scanned {}'.format(get_info(target.target_url, info = 'domain    1e')))
+        flash('success', 'Successfully scanned {}'.format(get_info(target.target_url, info = 'domain')))
         return redirect(url_for('home.dns_lookup_index'))
     else:
         flash('error', 'Cant find target with id {}'.format(str(id)))

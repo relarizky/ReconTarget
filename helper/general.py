@@ -60,6 +60,7 @@ def check_connection(url):
             'server' : '-'
         }
 
+
 def get_info(url, info = None):
     domain = tld.get_tld(url, as_object = True).parsed_url.netloc
     if info == 'domain':

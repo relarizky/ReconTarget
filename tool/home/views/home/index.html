@@ -45,8 +45,8 @@
         <td> <img src='{{url_for("get_flag", country = target.target_country)}}'> </td>
         <td> {{target.submited_at | text_date}} </td>
         <td>
-          <a href='{{url_for("home.check_target_connection", id = target.id)}}' class='btn btn-sm btn-info' title='check connection'>
-            <span class='fa fa-play'></span>
+          <a href='{{url_for("home.check_target_connection", id = target.id)}}' class='btn btn-sm btn-info' title='refresh connection'>
+            <span class='fa fa-refresh'></span>
           </a>
           <a href='#' class='btn btn-sm btn-warning' title='download info'>
             <span class='fa fa-download'></span>

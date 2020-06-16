@@ -24,6 +24,9 @@ def reverse_ip_scan(id):
     tools = request.form.get('tools')
 
     if target != None:
+        if target.id_user != current_user.id:
+            flash('error', 'You are not allowed to do that!')
+            return redirect(url_for('home.dns_lookup_index'))
         if target.target_status_code == 'dead':
             flash('error', 'The site seems to be dead')
             return redirect(url_for('home.reverse_ip_index'))

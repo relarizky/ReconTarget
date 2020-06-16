@@ -24,6 +24,9 @@ def wp_user_finder_scan(id):
     target = Target.query.get(id)
 
     if target != None:
+        if target.id_user != current_user.id:
+            flash('error', 'You are not allowed to do that!')
+            return redirect(url_for('home.dns_lookup_index'))
         if target.target_status_code == 'dead':
             flash('error', 'The site seems to be dead')
             return redirect(url_for('home.wp_user_finder_index'))

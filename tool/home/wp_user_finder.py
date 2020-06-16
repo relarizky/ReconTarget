@@ -2,8 +2,7 @@ import os
 import tempfile
 
 from app.model import *
-from helper.user import *
-from helper.reverse_ip import *
+from helper.general import *
 from helper.wp_user_finder import *
 
 from .home import home_bp
@@ -30,6 +29,7 @@ def wp_user_finder_scan(id):
         if target.target_status_code == 'dead':
             flash('error', 'The site seems to be dead')
             return redirect(url_for('home.wp_user_finder_index'))
+
         try:
             wp_users = WPUserFinder(target.target_url)
             wp_users = set(wp_users.find_from_wp_json() + wp_users.find_from_author_page())
@@ -98,7 +98,7 @@ def wp_user_finder_download(id):
         return redirect(url_for('home.wp_user_finder_index'))
 
 
-@home_bp.route('/wpuserfinder/view_raw/<int:id>')
+@home_bp.route('/wpuserfinder/view/<int:id>')
 @login_required
 def wp_user_finder_view_raw(id):
     target = Target.query.get(id)

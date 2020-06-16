@@ -11,7 +11,3 @@ def dns_lookup_hacker_target(site):
                 return request.text
             else:
                 return None
-
-
-def dns_lookup_dns_checker(site):
-    urlapi = 'https://dnschecker.org/all-dns-records-of-domain.php'

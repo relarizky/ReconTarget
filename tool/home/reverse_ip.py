@@ -2,7 +2,7 @@ import os
 import tempfile
 
 from app.model import *
-from helper.user import *
+from helper.general import *
 from helper.reverse_ip import *
 
 from .home import home_bp
@@ -30,6 +30,7 @@ def reverse_ip_scan(id):
         if target.target_status_code == 'dead':
             flash('error', 'The site seems to be dead')
             return redirect(url_for('home.reverse_ip_index'))
+
         try:
             revip = ReverseIP(target.target_url)
             if tools == 'bing':
@@ -105,7 +106,7 @@ def reverse_ip_download(id):
         return redirect(url_for('home.reverse_ip_index'))
 
 
-@home_bp.route('/revip/view_raw/<int:id>')
+@home_bp.route('/revip/view/<int:id>')
 @login_required
 def reverse_ip_view_raw(id):
     target = Target.query.get(id)

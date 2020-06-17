@@ -51,6 +51,7 @@ class Target(db.Model):
     submited_at = db.Column(db.Date, default = datetime.utcnow)
 
     revip = db.relationship('RevIP', backref = 'target', lazy = 'dynamic', cascade='all, delete')
+    whois = db.relationship('Whois', backref = 'target', lazy = 'dynamic', cascade='all, delete')
     wpuser = db.relationship('WPUser', backref = 'target', lazy = 'dynamic', cascade='all, delete')
     dnslookup = db.relationship('DNSLookup', backref = 'target', lazy = 'dynamic', cascade = 'all, delete')
 
@@ -95,3 +96,10 @@ class DNSLookup(db.Model):
         self.target = target
         self.has_scanned = has_scanned
         self.dnslookup_result = result
+
+
+class Whois(db.Model):
+    __tablename__ = 'tb_whois'
+
+    id = db.Column(db.Integer, primary_key = True)
+    id_target = db.Column(db.Integer, db.ForeignKey('tb_target.id'))

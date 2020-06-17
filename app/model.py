@@ -103,3 +103,10 @@ class Whois(db.Model):
 
     id = db.Column(db.Integer, primary_key = True)
     id_target = db.Column(db.Integer, db.ForeignKey('tb_target.id'))
+    has_scanned = db.Column(db.Boolean, default = False)
+    whois_result = db.Column(db.Text)
+
+    def __init__(self, target, has_scanned = False, result = None):
+        self.target = target
+        self.has_scanned = has_scanned
+        self.whois_result = result

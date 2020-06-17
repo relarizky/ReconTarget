@@ -11,3 +11,5 @@ def dns_lookup_hacker_target(site):
                 return request.text
             else:
                 return None
+        else:
+            return None

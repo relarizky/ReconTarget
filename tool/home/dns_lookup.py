@@ -39,16 +39,16 @@ def dns_lookup_scan(id):
                 dns_lookup.dnslookup_result = dns_result
         except Exception as Error:
             flash('error', 'Fail to scan DNS Lookup bcz, {}'.format(Error))
-            return redirect(url_for('home.dns_lookup_index'))
+            return secure_redirect(request.headers.get('referer'), url_for('home.dns_lookup_index'))
 
         if dns_lookup == None:
-            flash('error', 'result not found for target {}'.format(get_info(target.target_url, info = 'domain')))
-            return redirect(url_for('home.dns_lookup_index'))
+            flash('error', 'no result found for target {}'.format(get_info(target.target_url, info = 'domain')))
+            return secure_redirect(request.headers.get('referer'), url_for('home.dns_lookup_index'))
         else:
             db.session.add(dns_lookup)
             db.session.commit()
             flash('success', 'Successfully scanned {}'.format(get_info(target.target_url, info = 'domain')))
-            return redirect(url_for('home.dns_lookup_index'))
+            return secure_redirect(request.headers.get('referer'), url_for('home.dns_lookup_index'))
     else:
         flash('error', 'Cant find target with id {}'.format(str(id)))
         return redirect(url_for('home.dns_lookup_index'))

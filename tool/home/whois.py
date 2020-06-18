@@ -38,10 +38,10 @@ def whois_scan(id):
                 whois_result = whois_from_hacker_target(target.target_url)
             else:
                 flash('error', 'Specify appropriate reference!')
-                return redirect(url_for('home.whois_index'))
+                return secure_redirect(request.headers.get('referer'), url_for('home.whois_index'))
         except Exception as Error:
             flash('error', 'Fail to scan whois bcz, {}'.format(Error))
-            return redirect(url_for('home.whois_index'))
+            return secure_redirect(request.headers.get('referer'), url_for('home.whois_index'))
 
         if whois_result != None:
             if target.whois.first() == None:
@@ -53,10 +53,10 @@ def whois_scan(id):
             db.session.commit()
         else:
             flash('error', 'No whois result found for {}'.format(get_info(target.target_url, info = 'domain')))
-            return redirect(url_for('home.whois_index'))
+            return secure_redirect(request.headers.get('referer'), url_for('home.whois_index'))
 
         flash('success', 'Successfully scan {}'.format(get_info(target.target_url, info = 'domain')))
-        return redirect(url_for('home.whois_index'))
+        return secure_redirect(request.headers.get('referer'), url_for('home.whois_index'))
     else:
         flash('error', 'Cant find target with id {}'.format(str(id)))
         return redirect(url_for('home.whois_index'))

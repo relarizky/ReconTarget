@@ -41,10 +41,10 @@ def reverse_ip_scan(id):
                 revip = revip.hacker_target()
             else:
                 flash('error', 'Specify appropriate tool!')
-                return redirect(url_for('home.reverse_ip_index'))
+                return secure_redirect(request.headers.get('referer'), url_for('home.dns_lookup_index'))
         except Exception as Error:
             flash('error', 'Fail to do reverse ip bcz, {}'.format(Error))
-            return redirect(url_for('home.reverse_ip_index'))
+            return secure_redirect(request.headers.get('referer'), url_for('home.dns_lookup_index'))
 
         if len(revip) != 0:
             if target.revip.all() == []:
@@ -56,12 +56,12 @@ def reverse_ip_scan(id):
                 tb_revip.list_domain = list(new_list)
         else:
             flash('error', 'No other domain found in same server')
-            return redirect(url_for('home.reverse_ip_index'))
+            return secure_redirect(request.headers.get('referer'), url_for('home.dns_lookup_index'))
 
         db.session.add(tb_revip)
         db.session.commit()
         flash('success', 'Found {} other sites in same server'.format(str(len(revip))))
-        return redirect(url_for('home.reverse_ip_index'))
+        return secure_redirect(request.headers.get('referer'), url_for('home.dns_lookup_index'))
     else:
         flash('error', 'Cant find target with id {}'.format(str(id)))
         return redirect(url_for('home.reverse_ip_index'))

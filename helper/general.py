@@ -5,8 +5,8 @@ import json
 import socket
 import requests
 
-from flask import flash
 from flask import send_from_directory
+from flask import flash, redirect, request, flash
 
 def get_config(key):
     config_file = os.getcwd() + '/config.json'
@@ -111,3 +111,15 @@ def get_list_length(value):
         return len(value)
     except Exception as Error:
         return 0
+
+
+def secure_redirect(referer, exception):
+    try:
+        domain =  get_info(referer, info = 'domain')
+        if domain != request.host:
+            flash('error', 'You are not allowed to edit referrer!')
+            return redirect(exception)
+        else:
+            return redirect(referer)
+    except Exception as Error:
+        return redirect(exception)

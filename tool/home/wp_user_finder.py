@@ -47,13 +47,13 @@ def wp_user_finder_scan(id):
                     db.session.commit()
             else:
                 flash('error', 'No username found in target {}'.format(target.target_url))
-                return redirect(url_for('home.wp_user_finder_index'))
+                return secure_redirect(request.headers.get('referer'), url_for('home.wp_user_finder_index'))
         except Exception as Error:
             flash('error', 'Failed to fetch username bcz, {}'.format(Error))
-            return redirect(url_for('home.wp_user_finder_index'))
+            return secure_redirect(request.headers.get('referer'), url_for('home.wp_user_finder_index'))
         else:
             flash('success', 'Found {} usernames in {}'.format(str(len(wp_users)), target.target_url))
-            return redirect(url_for('home.wp_user_finder_index'))
+            return secure_redirect(request.headers.get('referer'), url_for('home.wp_user_finder_index'))
     else:
         flash('error', 'Cant find target with id {}'.format(str(id)))
         return redirect(url_for('home.wp_user_finder_index'))

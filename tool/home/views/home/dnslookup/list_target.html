@@ -49,19 +49,19 @@
         <td> {{dnslookup.submited_at | text_date}} </td>
         <td>
         {% if dnslookup.target_status_code == 'dead' %}
-          <a href='#' class='btn btn-sm btn-info disabled' title='start scan for username'>
+          <a href='#' class='btn btn-sm btn-info disabled' title='start scan dns lookup'>
             <span class='fa fa-play'></span>
           </a>
         {% else %}
-          <a href='{{url_for("home.dns_lookup_scan", id = dnslookup.id)}}' class='btn btn-sm btn-info' title='start scan for username'>
+          <a href='{{url_for("home.dns_lookup_scan", id = dnslookup.id)}}' class='btn btn-sm btn-info' title='start scan dns lookup'>
             <span class='fa fa-play'></span>
           </a>
         {% endif %}
         {% if dnslookup.dnslookup.first() != None %}
-          <a href='{{url_for("home.dns_lookup_download", id = dnslookup.id)}}' class='btn btn-sm btn-warning' title='download wp user list'>
+          <a href='{{url_for("home.dns_lookup_download", id = dnslookup.id)}}' class='btn btn-sm btn-warning' title='download dns lookup result'>
             <span class='fa fa-download'></span>
           </a>
-          <a href='{{url_for("home.dns_lookup_view_raw", id = dnslookup.id)}}' class='btn btn-sm btn-secondary' title='view raw wp user list'>
+          <a href='{{url_for("home.dns_lookup_view_raw", id = dnslookup.id)}}' class='btn btn-sm btn-secondary' title='view dns lookup result'>
             <span class='fa fa-eye'></span>
           </a>
         {% else %}

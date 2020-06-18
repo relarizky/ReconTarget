@@ -4,9 +4,9 @@ from helper.general import get_info
 
 def whois_from_hacker_target(site):
     domain = get_info(site, info = 'domain')
-    urlapi = 'http://api.hackertarget.com/whois/'
+    urlapi = 'http://api.hackertarget.com/whois/?q='
 
-    with requests.get(urlapi, params = {'q' : domain}) as request:
+    with requests.get(urlapi + domain) as request:
         if request.status_code == 200:
             if 'error input invalid' not in request.text:
                 return request.text
@@ -23,8 +23,8 @@ def whois_from_whois_com(site):
     with requests.get(urlapi + domain) as request:
         if request.status_code == 200:
             if 'domain has not been registered' not in request.text:
-                parse = BeautifulSoup(request.text, 'lxml')
-                parse = parse.find_all('pre', attrs = {'class' : 'df-raw', 'id' : 'registrarData'})
+                parse = BeautifulSoup(request.text, 'html.parser')
+                parse = parse.find_all('pre', attrs = {'class' : 'df-raw'})
                 return parse[0].get_text()
             else:
                 return None

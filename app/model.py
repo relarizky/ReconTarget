@@ -50,9 +50,10 @@ class Target(db.Model):
     target_status_code = db.Column(db.String(4))
     submited_at = db.Column(db.Date, default = datetime.utcnow)
 
-    revip = db.relationship('RevIP', backref = 'target', lazy = 'dynamic', cascade='all, delete')
-    whois = db.relationship('Whois', backref = 'target', lazy = 'dynamic', cascade='all, delete')
-    wpuser = db.relationship('WPUser', backref = 'target', lazy = 'dynamic', cascade='all, delete')
+    revip = db.relationship('RevIP', backref = 'target', lazy = 'dynamic', cascade = 'all, delete')
+    whois = db.relationship('Whois', backref = 'target', lazy = 'dynamic', cascade = 'all, delete')
+    wpuser = db.relationship('WPUser', backref = 'target', lazy = 'dynamic', cascade = 'all, delete')
+    foundlink = db.relationship('FoundLink', backref = 'target', lazy = 'dynamic', cascade = 'all, delete')
     dnslookup = db.relationship('DNSLookup', backref = 'target', lazy = 'dynamic', cascade = 'all, delete')
 
     def __init__(self, user, url = None):
@@ -110,3 +111,15 @@ class Whois(db.Model):
         self.target = target
         self.has_scanned = has_scanned
         self.whois_result = result
+
+
+class FoundLink(db.Model):
+    __tablename__ = 'tb_link'
+
+    id = db.Column(db.Integer, primary_key = True)
+    id_target = db.Column(db.Integer, db.ForeignKey('tb_target.id'))
+    found_link = db.Column(JSON)
+
+    def __init__(self, target, found_link = None):
+        self.target = target
+        self.found_link = found_link

@@ -1,5 +1,6 @@
 from app.model import *
 from helper.user import *
+from helper.general import *
 from flask_login import current_user, login_required
 from flask import Blueprint, render_template, request, url_for, redirect, flash
 from .home import home_bp
@@ -71,7 +72,7 @@ def user_edit(id):
         password = request.form.get('password', '')
 
         if not filter_edit_form(realname, username, password, id_role):
-            return redirect(url_for('home.users'))
+            return secure_redirect(request.headers.get('referer'), url_for('home.users'))
 
         role = Role.query.get(id_role)
         user = User.query.get(id)
@@ -85,6 +86,6 @@ def user_edit(id):
         db.session.commit()
 
         flash('success', 'Successfully edit user.')
-        return redirect(url_for('home.users'))
+        return secure_redirect(request.headers.get('referer'), url_for('home.users'))
     else:
         return redirect(url_for('home.index'))

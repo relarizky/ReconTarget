@@ -114,12 +114,8 @@ def get_list_length(value):
 
 
 def secure_redirect(referer, exception):
-    try:
-        domain =  get_info(referer, info = 'domain')
-        if domain != request.host:
-            flash('error', 'You are not allowed to edit referrer!')
-            return redirect(exception)
-        else:
-            return redirect(referer)
-    except Exception as Error:
+    if referer.startswith(request.host_url) == False:
+        flash('error', 'You are not allowed to edit referrer!')
         return redirect(exception)
+    else:
+        return redirect(referer)

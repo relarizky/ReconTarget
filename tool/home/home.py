@@ -9,6 +9,7 @@ from .user import *
 from .whois import *
 from .dns_lookup import *
 from .reverse_ip import *
+from .link_scrapper import *
 from .wp_user_finder import *
 
 @home_bp.route('/')

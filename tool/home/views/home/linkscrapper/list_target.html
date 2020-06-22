@@ -47,15 +47,48 @@
             <span class='fa fa-play'></span>
           </a>
         {% else %}
-          <a href='{{url_for("home.link_scrapper_scan", id = target.id)}}' class='btn btn-sm btn-info' title='start scan for link'>
-            <span class='fa fa-play'></span>
-          </a>
+        <a href='#' data-target='#myModal{{target.id}}' data-toggle='modal' class='btn btn-sm btn-info' title='start scan for link'>
+          <span class='fa fa-play'></span>
+        </a>
+        <div class="modal fade" id="myModal{{target.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel{{target.id}}" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel{{target.id}}">Link Scrapper</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body text-justify">
+                <form action='{{url_for("home.link_scrapper_scan", id = target.id)}}' method='POST'>
+                  <div class="form-group">
+                    <label for="target-url" class="col-form-label"> Target URL: </label>
+                    <input type="text" name="target_url" placeholder="http://target.com/" value="{{target.target_url}}" class="form-control" id="target-url" readonly>
+                  </div>
+                  <div class="form-group">
+                    <label for="target-url" class="col-form-label"> Tools: </label>
+                    <select name="tools" class="form-control">
+                      <option value="manual">Manual</option>
+                      <option value="hackertarget">Hacker Target</option>
+                    </select>
+                  </div>
+                  <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                  <input id="mainButton{{target.id}}" type="submit" style="display: none;">
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button onclick="document.getElementById('mainButton{{target.id}}').click();" type="button" class="btn btn-success">Scan</button>
+              </div>
+            </div>
+          </div>
+        </div>
         {% endif %}
         {% if target.foundlink.first() != None %}
-          <a href='{{url_for("home.wp_user_finder_download", id = target.id)}}' class='btn btn-sm btn-warning' title='download link list'>
+          <a href='{{url_for("home.link_scrapper_download", id = target.id)}}' class='btn btn-sm btn-warning' title='download link list'>
             <span class='fa fa-download'></span>
           </a>
-          <a href='{{url_for("home.wp_user_finder_view_raw", id = target.id)}}' class='btn btn-sm btn-secondary' title='view raw link list'>
+          <a href='{{url_for("home.link_scrapper_view_raw", id = target.id)}}' class='btn btn-sm btn-secondary' title='view raw link list'>
             <span class='fa fa-eye'></span>
           </a>
         {% else %}

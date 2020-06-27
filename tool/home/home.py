@@ -1,3 +1,5 @@
+import os
+
 from app.model import *
 from helper.general import *
 from flask_login import current_user, login_required
@@ -109,4 +111,62 @@ def check_target_connection(id):
         return redirect(url_for('home.index'))
     else:
         flash('error', 'Cant find target with id {}'.format(str(id)))
+        return redirect(url_for('home.index'))
+
+
+@home_bp.route('/download_list')
+@login_required
+def download_list():
+    tempfile.tempdir = os.getcwd()
+    list_target = Target.query.filter_by(id_user = current_user.id).all()
+
+    if len(list_target) != 0:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            tempfile.tempdir = temp_dir
+            file_name = 'list_target_' + current_user.user_name + '.txt'
+            file_object = tempfile.NamedTemporaryFile(mode = 'w+t')
+            file_content = [
+                [
+                    target.target_url, target.target_server,
+                    target.target_country, target.target_status_code
+                ] for target in list_target
+            ]
+            file_content = ['|'.join(target) for target in file_content]
+            file_content = '\n'.join(file_content)
+
+            try:
+                file_object.writelines(file_content)
+                file_object.seek(0)
+                response = send_file(file_object.name,
+                    mimetype='text/plain',
+                    as_attachment=True,
+                    attachment_filename=file_name)
+                response.headers['Content-Length'] = os.path.getsize(file_object.name)
+                response.headers['Cache-Control'] = 'no-cache'
+            finally:
+                file_object.close()
+
+            return response
+    else:
+        flash('error', 'You have not even input one target')
+        return redirect(url_for('home.index'))
+
+
+@home_bp.route('/view_raw_list')
+@login_required
+def view_raw_list():
+    list_target = Target.query.filter_by(id_user = current_user.id).all()
+
+    if len(list_target) != 0:
+        content = [
+            [
+                target.target_url, target.target_server,
+                target.target_country, target.target_status_code
+            ] for target in list_target
+        ]
+        content = ['|'.join(target) for target in file_content]
+        content = '\n'.join(file_content)
+        return content
+    else:
+        flash('error', 'You have not even input one target')
         return redirect(url_for('home.index'))

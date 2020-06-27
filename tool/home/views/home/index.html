@@ -24,6 +24,22 @@
 <button class='btn btn-sm btn-success py-2 px-3 my-1' data-toggle='modal' data-target='#myModal'>
   <i class='fa fa-plus'> ADD TARGET </i>
 </button>
+
+{% if targets.items|length != 0  %}
+  <a class='btn btn-sm btn-warning py-2 px-3 my-1' href='{{url_for("home.download_list")}}'>
+    <i class='fa fa-download'> DOWNLOAD LIST </i>
+  </a>
+  <a class='btn btn-sm btn-secondary py-2 px-3 my-1' href='#'>
+    <i class='fa fa-eye'> VIEW RAW LIST </i>
+  </a>
+{% else %}
+  <a class='btn btn-sm btn-warning py-2 px-3 my-1 disabled' href='#' disabled>
+    <i class='fa fa-download'> DOWNLOAD LIST </i>
+  </a>
+  <a class='btn btn-sm btn-secondary py-2 px-3 my-1 disabled' href='#' disabled>
+    <i class='fa fa-eye'> VIEW RAW LIST </i>
+  </a>
+{% endif %}
 <div class='table-responsive'>
   <table class='table table-sm table-hover text-center'>
     <thead style='background-color: #f8b739;'>

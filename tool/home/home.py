@@ -164,9 +164,122 @@ def view_raw_list():
                 target.target_country, target.target_status_code
             ] for target in list_target
         ]
-        content = ['|'.join(target) for target in file_content]
-        content = '\n'.join(file_content)
+        content = ['|'.join(target) for target in content]
+        content = '<br>'.join(content)
         return content
     else:
         flash('error', 'You have not even input one target')
+        return redirect(url_for('home.index'))
+
+
+@home_bp.route('/view_raw_info/<int:id>')
+@login_required
+def view_raw_info(id):
+    target = Target.query.filter_by(id_user = current_user.id, id = id).first()
+
+    if target != None:
+        content = ''
+        whois = target.whois.first()
+        wp_user = target.wpuser.first()
+        reverse_ip = target.revip.first()
+        dns_lookup = target.dnslookup.first()
+        link_scrapper = target.foundlink.first()
+
+        if whois != None:
+            content += '''
+            ## Whois Result
+            <br>
+            {}
+            <br><br>
+            '''.format(whois.whois_result.replace('\n', '<br>'))
+
+        if dns_lookup != None:
+            content += '''
+            ## DNS Lookup Result
+            <br>
+            {}
+            <br><br>
+            '''.format(dns_lookup.dnslookup_result.replace('\n', '<br>'))
+
+        if reverse_ip != None:
+            content += '''
+            ## Reverse IP
+            <br>
+            {}
+            <br><br>
+            '''.format('<br>'.join(domain for domain in reverse_ip.list_domain))
+
+        if wp_user != None:
+            content += '''
+            ## Wordpress User
+            <br>
+            {}
+            <br><br>
+            '''.format('<br>'.join(user for user in wp_user.list_username))
+
+        if link_scrapper != None:
+            content += '''
+            ## Found Link
+            <br>
+            {}
+            <br><br>
+            '''.format('<br>'.join(link for link in link_scrapper.found_link))
+
+        return content
+    else:
+        flash('error', 'Cant find target with id {}'.format(str(id)))
+        return redirect(url_for('home.index'))
+
+
+@home_bp.route('/download_info/<int:id>')
+@login_required
+def download_info(id):
+    tempfile.tempdir = os.getcwd()
+    target = Target.query.filter_by(id_user = current_user.id, id = id).first()
+
+    if target != None:
+        content = ''
+        whois = target.whois.first()
+        wp_user = target.wpuser.first()
+        reverse_ip = target.revip.first()
+        dns_lookup = target.dnslookup.first()
+        link_scrapper = target.foundlink.first()
+
+        # i dont use assignment operator += because it doesnt work, idk why:'
+        if whois != None:
+            content = content + "\n\n" + "## Whois Result\n{}\n".format(whois.whois_result).strip()
+
+        if dns_lookup != None:
+            content = content + "\n\n" + "## DNS Lookup Result\n{}\n".format(dns_lookup.dnslookup_result).strip()
+
+        if reverse_ip != None:
+            content = content + "\n\n" + "\n## Reverse IP\n{}\n".format('\n'.join(domain for domain in reverse_ip.list_domain)).strip()
+
+        if wp_user != None:
+            content = content + "\n\n" + '\n## Wordpress User\n{}\n'.format('\n'.join(user for user in wp_user.list_username)).strip()
+
+        if link_scrapper != None:
+            content = content + "\n\n" + '\n## Found Link\n{}\n'.format('\n'.join(link for link in link_scrapper.found_link)).strip()
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            tempfile.tempdir = temp_dir
+            file_name = 'info_' + get_info(target.target_url, info = 'domain') + '.txt'
+            file_object = tempfile.NamedTemporaryFile(mode = 'w+t')
+            file_content = content
+
+            try:
+                file_object.writelines(file_content)
+                file_object.seek(0)
+                response = send_file(file_object.name,
+                    mimetype='text/plain',
+                    as_attachment=True,
+                    attachment_filename=file_name)
+                response.headers['Content-Length'] = os.path.getsize(file_object.name)
+                response.headers['Cache-Control'] = 'no-cache'
+            finally:
+                file_object.close()
+
+            return response
+    else:
+        flash('error', 'Cant find target with id {}'.format(str(id)))
         return redirect(url_for('home.index'))

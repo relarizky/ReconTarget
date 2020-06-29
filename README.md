@@ -52,6 +52,12 @@ and then, you can log in to web app with these 2 default users
 
 you can change or add new user for security reason
 
+## Requirements
+
+- MySQL 
+
+- Python3 
+
 ## Feature
 
 - Multiple user with different role

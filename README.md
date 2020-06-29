@@ -1,7 +1,6 @@
 # ReconTarget
 
 [![Build Status](https://travis-ci.com/relarizky/ReconTarget.svg?branch=master)](https://relarizky/ReconTarget)
-![Flask](https://img.shields.io/github/pipenv/locked/dependency-version/metabolize/rq-dashboard-on-heroku/flask)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/relarizky/ReconTarget)
 ![GitHub repo size](https://img.shields.io/github/repo-size/relarizky/ReconTarget)
 ![GitHub last commit](https://img.shields.io/github/last-commit/relarizky/ReconTarget)

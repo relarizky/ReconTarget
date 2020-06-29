@@ -27,6 +27,13 @@ $ ./install.py
 $ python3 run.py
 ```
 
+## Usage
+
+after installation, you can now access this web app in `http://127.0.0.1:5000' and login with these 2 default users
+
+1. sayang:sayang123
+2. hekmen:hekmen123
+
 ## Feature
 
 - Multiple user with different role

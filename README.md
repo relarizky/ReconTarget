@@ -8,3 +8,25 @@
 ![tested os](https://img.shields.io/badge/Tested%20on-ubuntu%2019.10-critical)
 
 > Web Based Reconnaisance Tool Built With __Flask__
+
+***ReconTarget*** is web based reconnaisance tool that can help you to do reconnaisance and manage your target in your local machine. 
+This tool is integrated with database so you dont need to store your target list in a file. 
+This tool is also can be used by multiple user with different privilege (inspired by [Nessus](https://docs.tenable.com/nessus/Content/GettingStarted.htm)).
+
+## Feature
+
+- Multiple user with different role
+
+- Manage user (add, edit, update, delete)
+
+- Auto Update
+
+- Reverse IP (bing, hackertarget, yougetsignal)
+
+- DNS Lookup
+
+- Whois (whois.com, hackertarget)
+
+- Link Scrapper (manual, hackertarget)
+
+- Wordpress User Finder

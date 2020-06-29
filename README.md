@@ -50,7 +50,7 @@ and then, you can log in to web app with these 2 default users
 1. sayang:sayang123 (administrator)
 2. hekmen:hekmen123 (ordinary user)
 
-you can change or add new user for security reason
+you can change it or add new user for security reason
 
 ## Requirements
 

@@ -24,15 +24,22 @@ $ cd ReconTarget
 $ pip3 install -r requirements.txt
 $ chmod +x install.py
 $ ./install.py
-$ python3 run.py
 ```
 
 ## Usage
 
-after installation, you can now access this web app in http://127.0.0.1:5000 and login with these 2 default users
+after installation, you can now access this web app in http://127.0.0.1:5000 by typing this command
+
+```
+$ python3 run.py
+```
+
+and then, you can log in to web app with these 2 default users
 
 1. sayang:sayang123
 2. hekmen:hekmen123
+
+you can change or add new user for security reason
 
 ## Feature
 

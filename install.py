@@ -27,3 +27,5 @@ if os.path.exists(os.getcwd() + '/config.json') != True:
 
     # Create migration and run seeder.py for inserting default role and user
     os.system('flask db init; flask db migrate; flask db upgrade; python3 seeder.py')
+else:
+    print('[!] config.json already exists. remove database, config.json and migrations folder to reinstall.')

@@ -9,13 +9,23 @@
 
 > Web Based Reconnaisance Tool Built With __Flask__
 
-***ReconTarget*** is web based reconnaisance tool that can help you to do reconnaisance and manage your target in your local machine. 
+***ReconTarget*** is web based reconnaisance tool that can help you to do `reconnaisance` and `manage your target` in your local machine. 
 This tool is integrated with database so you dont need to store your target list in a file. 
 This tool is also can be used by multiple user with different privilege (inspired by [Nessus](https://docs.tenable.com/nessus/Content/GettingStarted.htm)).
 
 <img src='https://raw.githubusercontent.com/relarizky/ReconTarget/master/screenshot/1.png' width=30% height=25%> <img src='https://raw.githubusercontent.com/relarizky/ReconTarget/master/screenshot/2.png' width=30% height=25%> <img src='https://raw.githubusercontent.com/relarizky/ReconTarget/master/screenshot/3.png' width=30% height=25%>
 
 <img src='https://raw.githubusercontent.com/relarizky/ReconTarget/master/screenshot/4.png' width=30% height=25%> <img src='https://raw.githubusercontent.com/relarizky/ReconTarget/master/screenshot/5.png' width=30% height=25%> <img src='https://raw.githubusercontent.com/relarizky/ReconTarget/master/screenshot/6.png' width=30% height=25%>
+
+## Instalation
+```
+$ git clone https://github.com/relarizky/ReconTarget.git
+$ cd ReconTarget
+$ pip3 install -r requirements.txt
+$ chmod +x install.py
+$ ./install.py
+$ python3 run.py
+```
 
 ## Feature
 

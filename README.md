@@ -5,6 +5,8 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/relarizky/ReconTarget)
 ![GitHub last commit](https://img.shields.io/github/last-commit/relarizky/ReconTarget)
 ![GitHub stars](https://img.shields.io/github/stars/relarizky/ReconTarget)
+![GitHub watchers](https://img.shields.io/github/watchers/HightechSec/git-scanner)
+![GitHub forks](https://img.shields.io/github/forks/HightechSec/git-scanner)
 ![tested os](https://img.shields.io/badge/Tested%20on-ubuntu%2019.10-critical)
 
 > Web Based Reconnaisance Tool Built With __Flask__

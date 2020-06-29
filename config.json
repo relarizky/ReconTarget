@@ -1,7 +1,0 @@
-{
-    "SECRET_KEY": "123",
-    "MYSQL_HOSTNAME": "123",
-    "MYSQL_USERNAME": "123",
-    "MYSQL_PASSWORD": "123",
-    "MYSQL_DB_NAME": "123"
-}

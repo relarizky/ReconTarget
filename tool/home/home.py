@@ -283,3 +283,17 @@ def download_info(id):
     else:
         flash('error', 'Cant find target with id {}'.format(str(id)))
         return redirect(url_for('home.index'))
+
+
+@home_bp.route('/update')
+@login_required
+def update():
+    if current_user.user_role.id == 1:
+        check_update = auto_update()
+        if check_update == True:
+            flash('success', 'Successfully updated.')
+        else:
+            flash('error', 'No updates found.')
+        return redirect(url_for('home.index'))
+    else:
+        return redirect(url_for('home.index'))

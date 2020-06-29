@@ -22,7 +22,7 @@
 	          </li>
           {% if current_user.user_role.id == 1 %}
             <li>
-              <a href="#">Check Upgrade</a>
+              <a href="{{url_for('home.update')}}">Auto Update</a>
             </li>
             <li>
               <a href="#userSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Users</a>

@@ -4,6 +4,7 @@ import tld
 import json
 import socket
 import requests
+import subprocess
 
 from flask import send_from_directory
 from flask import flash, redirect, request, flash
@@ -119,3 +120,17 @@ def secure_redirect(referer, exception):
         return redirect(exception)
     else:
         return redirect(referer)
+
+
+def auto_update():
+    remote_name = subprocess.check_output(['git', 'remote', '-v'])
+    remote_name = remote_name.decode('utf-8')
+    remote_name = remote_name.split('\t')[0]
+
+    update = subprocess.check_output('git pull {} master'.format(remote_name), shell = True)
+    update = update.decode('utf-8')
+
+    if 'Already up to date.' in update:
+        return False
+    else:
+        return True

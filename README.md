@@ -18,6 +18,17 @@ This tool is also can be used by multiple user with different privilege (inspire
 <img src='https://raw.githubusercontent.com/relarizky/ReconTarget/master/screenshot/4.png' width=30% height=25%> <img src='https://raw.githubusercontent.com/relarizky/ReconTarget/master/screenshot/5.png' width=30% height=25%> <img src='https://raw.githubusercontent.com/relarizky/ReconTarget/master/screenshot/6.png' width=30% height=25%>
 
 ## Instalation
+
+first of all, you need to create one database before installing this tool, you can do that by typing
+
+```
+sudo mysql -u <your mysql user> -p -e 'CREATE DATABASE <name for db you'd like to create>
+
+ex : sudo mysql -u root -p -e 'CREATE DATABASE recon_target'
+```
+
+Then, you can install this web app by typing these following
+
 ```
 $ git clone https://github.com/relarizky/ReconTarget.git
 $ cd ReconTarget

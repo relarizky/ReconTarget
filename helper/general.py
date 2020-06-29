@@ -92,11 +92,11 @@ def filter_target_form(target_url):
         flash('error', 'Please fill all the required fields.')
         error += 1
     elif not check_valid_url(target_url):
-        flash('error', 'Invalid URL.')
+        flash('error', '{} is Invalid URL.'.format(target_url))
         error += 1
     else:
         if len(target_url) > 50:
-            flash('error', 'URL target is too much long.')
+            flash('error', 'URL {} target is too much long.'.format(target_url))
             error += 1
 
     return error == 0

@@ -58,23 +58,23 @@ def edit_profile():
 @home_bp.route('/add', methods = ['POST'])
 @login_required
 def add_target():
-    target_url  = request.form.get('target_url', '')
+    remove_whitespace = lambda element : element.strip()
+    target_urls = request.form.get('target_url', '').strip()
+    target_urls = list(map(remove_whitespace, target_urls.split('\n')))
 
-    if not filter_target_form(target_url):
-        return redirect(url_for('home.index'))
+    for target_url in target_urls:
+        check_error = filter_target_form(target_url)
+        if check_error == True:
+            check_conn = check_connection(target_url)
+            target = Target(current_user, target_url)
+            target.target_url = check_conn.get('url')
+            target.target_server = check_conn.get('server')
+            target.target_country = get_country(target_url)
+            target.target_status_code = check_conn.get('code')
+            db.session.add(target)
+            db.session.commit()
+            flash('success', 'Successfully added {}'.format(target_url))
 
-    check_conn = check_connection(target_url)
-
-    target = Target(current_user, target_url)
-    target.target_url = check_conn.get('url')
-    target.target_server = check_conn.get('server')
-    target.target_country = get_country(target_url)
-    target.target_status_code = check_conn.get('code')
-
-    db.session.add(target)
-    db.session.commit()
-
-    flash('success', 'Successfully add target.')
     return redirect(url_for('home.index'))
 
 

@@ -92,7 +92,7 @@
         <form action='{{url_for("home.add_target")}}' method='POST'>
           <div class="form-group">
             <label for="target-url" class="col-form-label"> Target URL: </label>
-            <input type="text" name="target_url" placeholder="http://target.com/" class="form-control" id="target-url" required>
+            <textarea type="text" name="target_url" placeholder='https://target.com/' rows=5 class="form-control" id="target-url" required></textarea>
           </div>
           <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
           <input id="mainButton" type="submit" style="display: none;">

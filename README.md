@@ -77,3 +77,9 @@ you can change it or add new user for security reason
 - Link Scrapper (manual, hackertarget)
 
 - Wordpress User Finder
+
+## Guide
+
+For other preview or guide with example picture, visit this following link
+
+[https://relarizky.github.io/2020-06-30-recon-target/](https://relarizky.github.io/2020-06-30-recon-target/)

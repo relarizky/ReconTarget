@@ -1,12 +1,14 @@
 # ReconTarget
 
 [![Build Status](https://travis-ci.com/relarizky/ReconTarget.svg?branch=master)](https://relarizky/ReconTarget)
+![Version](https://img.shields.io/badge/version-1.0-brightgreen)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/relarizky/ReconTarget)
 ![GitHub repo size](https://img.shields.io/github/repo-size/relarizky/ReconTarget)
 ![GitHub last commit](https://img.shields.io/github/last-commit/relarizky/ReconTarget)
 ![GitHub stars](https://img.shields.io/github/stars/relarizky/ReconTarget)
 ![GitHub watchers](https://img.shields.io/github/watchers/relarizky/ReconTarget)
 ![GitHub forks](https://img.shields.io/github/forks/relarizky/ReconTarget)
+[![HitCount](http://hits.dwyl.com/relarizky/ReconTarget.svg)](http://hits.dwyl.com/relarizky/ReconTarget)
 ![tested os](https://img.shields.io/badge/Tested%20on-ubuntu%2019.10-critical)
 
 ***ReconTarget*** is web based reconnaisance tool that can help you to do `reconnaisance` and `manage your target` in your local machine. 

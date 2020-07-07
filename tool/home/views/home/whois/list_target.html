@@ -1,0 +1,135 @@
+{% extends 'template.html' %}
+
+{% block navbar %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+
+    <button type="button" id="sidebarCollapse" class="btn btn-primary">
+      <i class="fa fa-bars"></i>
+      <span class="sr-only">Toggle Menu</span>
+    </button>
+      <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <i class="fa fa-bars"></i>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      </div>
+  </div>
+</nav>
+{% endblock %}
+
+{% block header %} WHOIS {% endblock %}
+
+{% block body %}
+<div class='table-responsive'>
+  <table class='table table-sm table-hover text-center'>
+    <thead style='background-color: #f8b739;'>
+      <tr>
+        <td> URL </td>
+        <td> WHOIS </td>
+        <td> STATUS </td>
+        <td> COUNTRY </td>
+        <td> SUBMITED AT </td>
+        <td> ACTION </td>
+      </tr>
+    </thead>
+    <tbody>
+    {% for target in targets.items %}
+      <tr>
+        <td> {{target.target_url}} </td>
+        <td>
+        {% if target.whois.first().has_scanned == True %}
+          <span class='fa fa-check'></span>
+        {% else %}
+          <span class='fa fa-times'></span>
+        {% endif %}
+        </td>
+        <td> {{target.target_status_code}} </td>
+        <td> <img src='{{url_for("get_flag", country = target.target_country)}}'> </td>
+        <td> {{target.submited_at | text_date}} </td>
+        <td>
+        {% if target.target_status_code == 'dead' %}
+          <a href='#' class='btn btn-sm btn-info disabled' title='start scan whois'>
+            <span class='fa fa-play'></span>
+          </a>
+        {% else %}
+        <a href='#' data-target='#myModal{{target.id}}' data-toggle='modal' class='btn btn-sm btn-info' title='start reverse ip'>
+          <span class='fa fa-play'></span>
+        </a>
+        <div class="modal fade" id="myModal{{target.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel{{target.id}}" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel{{target.id}}">WHOIS</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body text-justify">
+                <form action='{{url_for("home.whois_scan", id = target.id)}}' method='POST'>
+                  <div class="form-group">
+                    <label for="target-url" class="col-form-label"> Target URL: </label>
+                    <input type="text" name="target_url" placeholder="http://target.com/" value="{{target.target_url}}" class="form-control" id="target-url" readonly>
+                  </div>
+                  <div class="form-group">
+                    <label for="target-url" class="col-form-label"> Tools: </label>
+                    <select name="tools" class="form-control">
+                      <option value="whois.com">Whois.com</option>
+                      <option value="hackertarget">Hacker Target</option>
+                    </select>
+                  </div>
+                  <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                  <input id="mainButton{{target.id}}" type="submit" style="display: none;">
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button onclick="document.getElementById('mainButton{{target.id}}').click();" type="button" class="btn btn-success">Scan</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+        {% if target.whois.first() != None %}
+          <a href='{{url_for("home.whois_download", id = target.id)}}' class='btn btn-sm btn-warning' title='download whois result'>
+            <span class='fa fa-download'></span>
+          </a>
+          <a href='{{url_for("home.whois_view_raw", id = target.id)}}' class='btn btn-sm btn-secondary' title='view whois result'>
+            <span class='fa fa-eye'></span>
+          </a>
+        {% else %}
+          <a href='#' class='btn btn-sm btn-warning disabled' title='download whois result'>
+            <span class='fa fa-download'></span>
+          </a>
+          <a href='#' class='btn btn-sm btn-secondary disabled' title='view whois result'>
+            <span class='fa fa-eye'></span>
+          </a>
+        {% endif %}
+        </td>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<ul class="pagination justify-content-center mb-4">
+{% if targets.has_prev %}
+  <li class="page-item">
+    <a class="page-link" href="{{url_for('home.whois_index')}}?page={{targets.prev_num}}">&larr; Prev</a>
+  </li>
+{% else %}
+  <li class="page-item disabled">
+    <a class="page-link" href="#" aria-disabled='true'>&larr; Prev</a>
+  </li>
+{% endif %}
+
+{% if targets.has_next %}
+  <li class="page-item">
+    <a class="page-link" href="{{url_for('home.whois_index')}}?page={{targets.next_num}}">Next &rarr;</a>
+  </li>
+{% else %}
+  <li class="page-item disabled">
+    <a class="page-link" href="#">Next &rarr;</a>
+  </li>
+{% endif %}
+</ul>
+{% endblock %}

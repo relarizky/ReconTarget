@@ -1,0 +1,130 @@
+{% extends 'template.html' %}
+
+{% block navbar %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+
+    <button type="button" id="sidebarCollapse" class="btn btn-primary">
+      <i class="fa fa-bars"></i>
+      <span class="sr-only">Toggle Menu</span>
+    </button>
+      <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <i class="fa fa-bars"></i>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      </div>
+  </div>
+</nav>
+{% endblock %}
+
+{% block header %} Dashboard {% endblock %}
+
+{% block body %}
+<button class='btn btn-sm btn-success py-2 px-3 my-1' data-toggle='modal' data-target='#myModal'>
+  <i class='fa fa-plus'> ADD TARGET </i>
+</button>
+
+{% if targets.items|length != 0  %}
+  <a class='btn btn-sm btn-warning py-2 px-3 my-1' href='{{url_for("home.download_list")}}'>
+    <i class='fa fa-download'> DOWNLOAD LIST </i>
+  </a>
+  <a class='btn btn-sm btn-secondary py-2 px-3 my-1' href='{{url_for("home.view_raw_list")}}'>
+    <i class='fa fa-eye'> VIEW RAW LIST </i>
+  </a>
+{% else %}
+  <a class='btn btn-sm btn-warning py-2 px-3 my-1 disabled' href='#' disabled>
+    <i class='fa fa-download'> DOWNLOAD LIST </i>
+  </a>
+  <a class='btn btn-sm btn-secondary py-2 px-3 my-1 disabled' href='#' disabled>
+    <i class='fa fa-eye'> VIEW RAW LIST </i>
+  </a>
+{% endif %}
+<div class='table-responsive'>
+  <table class='table table-sm table-hover text-center'>
+    <thead style='background-color: #f8b739;'>
+      <tr>
+        <td> URL </td>
+        <td> SERVER </td>
+        <td> STATUS </td>
+        <td> COUNTRY </td>
+        <td> SUBMITED AT </td>
+        <td> ACTION </td>
+      </tr>
+    </thead>
+    <tbody>
+    {% for target in targets.items %}
+      <tr>
+        <td> {{target.target_url}} </td>
+        <td> {{target.target_server}} </td>
+        <td> {{target.target_status_code}} </td>
+        <td> <img src='{{url_for("get_flag", country = target.target_country)}}'> </td>
+        <td> {{target.submited_at | text_date}} </td>
+        <td>
+          <a href='{{url_for("home.check_target_connection", id = target.id)}}' class='btn btn-sm btn-info' title='refresh connection'>
+            <span class='fa fa-refresh'></span>
+          </a>
+          <a href='{{url_for("home.download_info", id = target.id)}}' class='btn btn-sm btn-warning' title='download info'>
+            <span class='fa fa-download'></span>
+          </a>
+          <a href='{{url_for("home.view_raw_info", id = target.id)}}' class='btn btn-sm btn-secondary' title='view raw info'>
+            <span class='fa fa-eye'></span>
+          </a>
+          <a href='{{url_for("home.delete_target", id = target.id)}}' class='btn btn-sm btn-danger' title='remove url'>
+            <span class='fa fa-remove'></span>
+          </a>
+        </td>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel">Add Target</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action='{{url_for("home.add_target")}}' method='POST'>
+          <div class="form-group">
+            <label for="target-url" class="col-form-label"> Target URL: </label>
+            <textarea type="text" name="target_url" placeholder='https://target.com/' rows=5 class="form-control" id="target-url" required></textarea>
+          </div>
+          <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+          <input id="mainButton" type="submit" style="display: none;">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button onclick="document.getElementById('mainButton').click();" type="button" class="btn btn-success">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ul class="pagination justify-content-center mb-4">
+{% if targets.has_prev %}
+  <li class="page-item">
+    <a class="page-link" href="{{url_for('home.index')}}?page={{targets.prev_num}}">&larr; Prev</a>
+  </li>
+{% else %}
+  <li class="page-item disabled">
+    <a class="page-link" href="#" aria-disabled='true'>&larr; Prev</a>
+  </li>
+{% endif %}
+
+{% if targets.has_next %}
+  <li class="page-item">
+    <a class="page-link" href="{{url_for('home.index')}}?page={{targets.next_num}}">Next &rarr;</a>
+  </li>
+{% else %}
+  <li class="page-item disabled">
+    <a class="page-link" href="#">Next &rarr;</a>
+  </li>
+{% endif %}
+</ul>
+{% endblock %}

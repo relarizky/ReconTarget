@@ -1,0 +1,138 @@
+{% extends 'template.html' %}
+
+{% block navbar %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+
+    <button type="button" id="sidebarCollapse" class="btn btn-primary">
+      <i class="fa fa-bars"></i>
+      <span class="sr-only">Toggle Menu</span>
+    </button>
+    <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fa fa-bars"></i>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="nav navbar-nav ml-auto">
+        <li class="nav-item">
+            <a class="nav-link active" href="{{url_for('home.users')}}">Users</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{url_for('home.add_user')}}">Add</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{url_for('home.edit_profile')}}">Edit</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+{% endblock %}
+
+{% block header %} User List {% endblock %}
+
+{% block body %}
+<div class='table-responsive'>
+  <table class='table table-sm table-hover text-center'>
+    <thead style='background-color: #f8b739;'>
+      <tr>
+        <td> REALNAME </td>
+        <td> USERNAME </td>
+        <td> ROLE </td>
+        <td> ACTION </td>
+    </thead>
+    <tbody>
+    {% for user in users.items %}
+      <tr>
+        <td> {{user.real_name | pascal_case}} </td>
+        <td> {{user.user_name}} </td>
+        <td> {{user.user_role.name}} </td>
+      {% if user.user_name == current_user.user_name %}
+        <td>
+          <button aria-disabled='true' class='btn btn-sm btn-warning disabled'>
+            <a href='#'> <i class='fa fa-edit'>EDIT</i> </a>
+          </button>
+
+          <button aria-disabled='true' class='btn btn-sm btn-danger disabled'>
+            <a href='#'> <i class='fa fa-remove'>DELETE</i> </a>
+          </button>
+        </td>
+      {% else %}
+        <td>
+          <a href='#' class='btn btn-sm btn-warning' data-toggle='modal' data-target='#exampleModal{{user.id}}'> <i class='fa fa-edit'>EDIT</i> </a>
+
+          <div class="modal fade" id="exampleModal{{user.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Edit User</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form action='{{url_for("home.user_edit", id = user.id)}}' method='POST'>
+                    <div class="form-group">
+                      <label for="real-name" class="col-form-label"> Realname: </label>
+                      <input type="text" name="realname" value="{{user.real_name}}" class="form-control" id="real-name" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="user-name" class="col-form-label"> Username: </label>
+                      <input type="text" name="username" value="{{user.user_name}}" class="form-control" id="user-name" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="pass-word" class="col-form-label"> Password: </label>
+                      <input type="password" name="password" class="form-control" id="pass-word">
+                    </div>
+                    <div class="form-group">
+                      <label for="role-user" class="col-form-label"> Role: </label>
+                      <select name='id_role' class='form-control'>
+                        <option value='{{user.user_role.id}}' selected>{{user.user_role.name}}</option>
+                      {% for role in roles %}
+                        <option value='{{role.id}}'> {{role.name}} </option>
+                      {% endfor %}
+                      </select>
+                    </div>
+                    <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                    <input id="mainButton{{user.id}}" type="submit" style="display: none;">
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                  <button onclick="document.getElementById('mainButton{{user.id}}').click();" type="button" class="btn btn-sm btn-success">Submit</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <a href='{{url_for("home.user_delete", id = user.id)}}' class='btn btn-sm btn-danger'> <i class='fa fa-remove'>DELETE</i> </a>
+        </td>
+      {% endif %}
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<ul class="pagination justify-content-center mb-4">
+{% if users.has_prev %}
+  <li class="page-item">
+    <a class="page-link" href="{{url_for('home.users')}}?page={{users.prev_num}}">&larr; Prev</a>
+  </li>
+{% else %}
+  <li class="page-item disabled">
+    <a class="page-link" href="#" aria-disabled='true'>&larr; Prev</a>
+  </li>
+{% endif %}
+
+{% if users.has_next %}
+  <li class="page-item">
+    <a class="page-link" href="{{url_for('home.users')}}?page={{users.next_num}}">Next &rarr;</a>
+  </li>
+{% else %}
+  <li class="page-item disabled">
+    <a class="page-link" href="#">Next &rarr;</a>
+  </li>
+{% endif %}
+</ul>
+{% endblock %}

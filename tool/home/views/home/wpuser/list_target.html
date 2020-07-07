@@ -1,0 +1,96 @@
+{% extends 'template.html' %}
+
+{% block navbar %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+
+    <button type="button" id="sidebarCollapse" class="btn btn-primary">
+      <i class="fa fa-bars"></i>
+      <span class="sr-only">Toggle Menu</span>
+    </button>
+      <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <i class="fa fa-bars"></i>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      </div>
+  </div>
+</nav>
+{% endblock %}
+
+{% block header %} Wordpress User Finder {% endblock %}
+
+{% block body %}
+<div class='table-responsive'>
+  <table class='table table-sm table-hover text-center'>
+    <thead style='background-color: #f8b739;'>
+      <tr>
+        <td> URL </td>
+        <td> FOUND USERNAME </td>
+        <td> STATUS </td>
+        <td> COUNTRY </td>
+        <td> SUBMITED AT </td>
+        <td> ACTION </td>
+      </tr>
+    </thead>
+    <tbody>
+    {% for wpuser in wpusers.items %}
+      <tr>
+        <td> {{wpuser.target_url}} </td>
+        <td> {{wpuser.wpuser.first().list_username | list_length}} </td>
+        <td> {{wpuser.target_status_code}} </td>
+        <td> <img src='{{url_for("get_flag", country = wpuser.target_country)}}'> </td>
+        <td> {{wpuser.submited_at | text_date}} </td>
+        <td>
+        {% if wpuser.target_status_code == 'dead' %}
+          <a href='#' class='btn btn-sm btn-info disabled' title='start scan for username'>
+            <span class='fa fa-play'></span>
+          </a>
+        {% else %}
+          <a href='{{url_for("home.wp_user_finder_scan", id = wpuser.id)}}' class='btn btn-sm btn-info' title='start scan for username'>
+            <span class='fa fa-play'></span>
+          </a>
+        {% endif %}
+        {% if wpuser.wpuser.first() != None %}
+          <a href='{{url_for("home.wp_user_finder_download", id = wpuser.id)}}' class='btn btn-sm btn-warning' title='download wp user list'>
+            <span class='fa fa-download'></span>
+          </a>
+          <a href='{{url_for("home.wp_user_finder_view_raw", id = wpuser.id)}}' class='btn btn-sm btn-secondary' title='view raw wp user list'>
+            <span class='fa fa-eye'></span>
+          </a>
+        {% else %}
+          <a href='#' class='btn btn-sm btn-warning disabled' title='download wpuser list'>
+            <span class='fa fa-download'></span>
+          </a>
+          <a href='#' class='btn btn-sm btn-secondary disabled' title='view raw wpuser list'>
+            <span class='fa fa-eye'></span>
+          </a>
+        {% endif %}
+        </td>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<ul class="pagination justify-content-center mb-4">
+{% if wpusers.has_prev %}
+  <li class="page-item">
+    <a class="page-link" href="{{url_for('home.wp_user_finder_index')}}?page={{wpusers.prev_num}}">&larr; Prev</a>
+  </li>
+{% else %}
+  <li class="page-item disabled">
+    <a class="page-link" href="#" aria-disabled='true'>&larr; Prev</a>
+  </li>
+{% endif %}
+
+{% if wpusers.has_next %}
+  <li class="page-item">
+    <a class="page-link" href="{{url_for('home.wp_user_finder_index')}}?page={{wpusers.next_num}}">Next &rarr;</a>
+  </li>
+{% else %}
+  <li class="page-item disabled">
+    <a class="page-link" href="#">Next &rarr;</a>
+  </li>
+{% endif %}
+</ul>
+{% endblock %}

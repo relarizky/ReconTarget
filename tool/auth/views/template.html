@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<!-- Copyright © https://colorlib.com -->
+<html lang="en">
+  <head>
+  	<title>ReconTarget</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+		<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+		<link rel="stylesheet" href="/assets/css/style.css">
+  </head>
+  <body>
+
+		<div class="wrapper d-flex align-items-stretch">
+			<nav id="sidebar">
+				<div class="p-4 pt-5">
+		  		<a href="#" class="img logo rounded-circle mb-5" style="background-image: url(/assets/images/attacker.png);"></a>
+          <p class='text-center my-3' style='color: #f8b739; font-size:1.6rem;'>ReconTarget</p>
+	        <ul class="list-unstyled components mb-5">
+	          <li>
+	            <a href="{{url_for('home.index')}}">Dashboard</a>
+	          </li>
+          {% if current_user.user_role.id == 1 %}
+            <li>
+              <a href="{{url_for('home.update')}}">Auto Update</a>
+            </li>
+            <li>
+              <a href="#userSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Users</a>
+              <ul class="collapse list-unstyled" id="userSubmenu">
+                <li>
+                  <a href="{{url_for('home.edit_profile')}}">Edit Profile</a>
+                </li>
+                <li>
+                  <a href="{{url_for('home.users')}}">Manage User</a>
+                </li>
+              </ul>
+            </li>
+          {% endif %}
+            <li>
+              <a href="#toolSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Tools</a>
+              <ul class="collapse list-unstyled" id="toolSubmenu">
+                <li>
+                  <a href="{{url_for('home.reverse_ip_index')}}">Reverse IP</a>
+                </li>
+                <li>
+                  <a href="{{url_for('home.dns_lookup_index')}}">DNS Lookup</a>
+                </li>
+                <li>
+                  <a href="{{url_for('home.whois_index')}}">WHOIS</a>
+                </li>
+                <li>
+                  <a href="{{url_for('home.link_scrapper_index')}}">Link Scrapper</a>
+                </li>
+                <li>
+                  <a href="{{url_for('home.wp_user_finder_index')}}">Wordpress User Finder</a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="{{url_for('auth.logout')}}">Logout</a>
+	          </li>
+	        </ul>
+
+	        <div class="footer text-center">
+              <p style='font-size:1rem;'>
+                <i class='fa fa-github'><a href='https://github.com/relarizky/' class='text-decoration-none' target='_blank'> Relarizky </a></i>
+              </p>
+	        </div>
+
+	      </div>
+    	</nav>
+
+        <!-- Page Content  -->
+      <div id="content" class="p-4 p-md-5">
+        {% block navbar %} {% endblock %}
+
+        {% import 'macro.html' as macro %}
+        {{macro.alert_message()}}
+
+        <h2 class="mb-4">
+          {% block header %}{% endblock %}
+        </h2>
+
+        {% block body %}{% endblock %}
+      </div>
+		</div>
+
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/popper.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/main.js"></script>
+  </body>
+</html>

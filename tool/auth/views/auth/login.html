@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<!-- its just getbootstrap signin template -->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="login page for ReconTarget">
+    <meta name="author" content="relarizky">
+    <title>ReconTarget</title>
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/css/login.css" rel="stylesheet">
+  </head>
+  <body class="text-center">
+    <form class="form-signin" action="{{url_for('auth.login')}}" method="POST">
+      <img class="mb-4" src="/assets/images/attacker.png" alt="" width="72" height="72">
+      <h1 class="h3 mb-3 font-weight-normal">User Login</h1>
+      <label for="username" class="sr-only">Username</label>
+      <input type="text" name="username" id="inputUsername" class="form-control" placeholder="username" required autofocus>
+      <label for="inputPassword" class="sr-only">Password</label>
+      <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+      <div class="checkbox mb-3">
+        <label>
+          <input type="checkbox" name="remember" value="remember-me"> Remember me
+        </label>
+      </div>
+      <input type="hidden"  name="csrf_token" value="{{csrf_token()}}">
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      <p class="mt-5 mb-3 text-muted">&copy; 2020-2021</p>
+    </form>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+  </body>
+</html>

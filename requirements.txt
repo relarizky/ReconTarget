@@ -1,0 +1,12 @@
+flask
+flask_wtf
+flask_login
+flask_migrate
+flask_sqlalchemy
+
+tld
+lxml
+bcrypt
+requests
+gunicorn
+mysqlclient

@@ -1,0 +1,4 @@
+migrations/*
+venv/*
+*/__pycache__/*
+config.json

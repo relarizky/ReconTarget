@@ -1,6 +1,7 @@
 from app.model import *
 from helper.user import *
 from helper.general import *
+from sqlalchemy.exc import IntegrityError
 from flask_login import current_user, login_required
 from flask import Blueprint, render_template, request, url_for, redirect, flash
 from .home import home_bp
@@ -30,11 +31,15 @@ def add_user():
             if not filter_register_form(realname, username, password, id_role):
                 return redirect(url_for('home.add_user'))
 
-            role = Role.query.get(id_role)
-            user = User(role, realname, username)
-            user.secure_password(password)
-            db.session.add(user)
-            db.session.commit()
+            try:
+                role = Role.query.get(id_role)
+                user = User(role, realname, username)
+                user.secure_password(password)
+                db.session.add(user)
+                db.session.commit()
+            except IntegrityError as Duplicated:
+                flash('error', 'User is duplicated')
+                return redirect(url_for('home.add_user'))
 
             flash('success', 'Successfully added new user.')
             return redirect(url_for('home.users'))

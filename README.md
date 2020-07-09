@@ -1,7 +1,7 @@
 # ReconTarget
 
 [![Build Status](https://travis-ci.com/relarizky/ReconTarget.svg?branch=master)](https://relarizky/ReconTarget)
-![Version](https://img.shields.io/badge/version-1.0-brightgreen)
+![Version](https://img.shields.io/badge/version-1.2-brightgreen)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/relarizky/ReconTarget)
 ![GitHub repo size](https://img.shields.io/github/repo-size/relarizky/ReconTarget)
 ![GitHub last commit](https://img.shields.io/github/last-commit/relarizky/ReconTarget)
@@ -77,6 +77,14 @@ you can change it or add new user for security reason
 - Link Scrapper (manual, hackertarget)
 
 - Wordpress User Finder
+
+## Changelog
+
+- v1.2
+
+	- Fixed Duplicated user while adding user
+	
+	- Fixed error in script _run.py_
 
 ## Guide
 
